@@ -17,42 +17,8 @@ void IDetailsViewRow::clear()
 }
 
 QDetailsViewRow_Property::QDetailsViewRow_Property(QPropertyHandle* inHandle)
-    : mHandle(inHandle)
 {
-    mPropertyTypeCustomization = QQuickDetailsViewManager::Get()->getCustomPropertyType(mHandle->getType());
-    if (mHandle->getPropertyType() == QPropertyHandle::Object) {
-        auto objectHandle = mHandle->asObject();
-        mClassLayoutCustomization = QQuickDetailsViewManager::Get()->getCustomDetailLayout(objectHandle->getMetaObject());
-    }
-}
-
-void QDetailsViewRow_Root::addChild(QSharedPointer<IDetailsViewRow> inChild)
-{
-    mChildren << inChild;
-}
-
-void QDetailsViewRow_Root::setObject(QObject* inObject)
-{
-    mObject = inObject;
-    mClassLayoutCustomization = QQuickDetailsViewManager::Get()->getCustomDetailLayout(mObject->metaObject());
-}
-
-void QDetailsViewRow_Root::attachChildren()
-{
-	if (mClassLayoutCustomization) {
-		QQuickDetailsViewLayoutBuilder builder(this);
-		mClassLayoutCustomization->customizeDetails(mObject, &builder);
-	}
-	else {
-		for (int i = 1; i < mObject->metaObject()->propertyCount(); i++) {
-			QMetaProperty prop = mObject->metaObject()->property(i);
-			QString propertyPath = prop.name();
-			QPropertyHandle* handler = QPropertyHandle::FindOrCreate(mObject, propertyPath);
-			QSharedPointer<IDetailsViewRow> child(new QDetailsViewRow_Property(handler));
-			addChild(child);
-			child->attachChildren();
-		}
-	}
+	setHandle(inHandle);
 }
 
 void QDetailsViewRow_Property::setupItem(QQuickItem* inParent)
@@ -94,30 +60,30 @@ void QDetailsViewRow_Property::attachChildren()
 		}
 	}
 	else if (mHandle->getPropertyType() == QPropertyHandle::Object) {
-		auto objectHandle = mHandle->asObject();
-		QObject* object = objectHandle->getObject();
-		if (object == nullptr)
-			return;
-        if (mClassLayoutCustomization) {
-            QQuickDetailsViewLayoutBuilder builder(this);
-            mClassLayoutCustomization->customizeDetails(object, &builder);
-        }
-        else {
-			for (int i = 1; i < object->metaObject()->propertyCount(); i++) {
-				QMetaProperty prop = object->metaObject()->property(i);
-				QString propertyPath = mHandle->createSubPath(prop.name());
-				QPropertyHandle* handler = QPropertyHandle::FindOrCreate(mHandle->parent(), propertyPath);
-				QSharedPointer<IDetailsViewRow> child(new QDetailsViewRow_Property(handler));
-				addChild(child);
-				child->attachChildren();
-			}
-        }
+		if (mClassLayoutCustomization) {
+			QQuickDetailsViewLayoutBuilder builder(this);
+			mClassLayoutCustomization->customizeLayout(mHandle, &builder);
+		}
 	}
     else if (mHandle->getPropertyType() == QPropertyHandle::RawType){
 		QQuickDetailsViewLayoutBuilder builder(this);
         if(mPropertyTypeCustomization)
             mPropertyTypeCustomization->customizeChildren(mHandle, &builder);
     }
+}
+
+void QDetailsViewRow_Property::setHandle(QPropertyHandle* inHandle)
+{
+	mHandle = inHandle;
+	if (!inHandle)
+		return;
+	if (mHandle->getPropertyType() == QPropertyHandle::Object) {
+		auto objectHandle = mHandle->asObject();
+		mClassLayoutCustomization = QQuickDetailsViewManager::Get()->getCustomDetailLayout(objectHandle->getMetaObject());
+	}
+	else {
+		mPropertyTypeCustomization = QQuickDetailsViewManager::Get()->getCustomPropertyType(mHandle->getType());
+	}
 }
 
 QDetailsViewRow_Custom::QDetailsViewRow_Custom(QQuickItem* inItem)

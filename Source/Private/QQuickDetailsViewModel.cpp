@@ -4,7 +4,7 @@
 
 QQuickDetailsViewModel::QQuickDetailsViewModel(QObject* parent)
 	: QAbstractItemModel(parent) 
-    , mRoot(new QDetailsViewRow_Root)
+    , mRoot(new QDetailsViewRow_Property(nullptr))
 {
 }
 
@@ -60,7 +60,7 @@ void QQuickDetailsViewModel::rebuildNode()
 {
     beginResetModel();
     mRoot->clear();
-    mRoot->setObject(mObject);
+    mRoot->setHandle(QPropertyHandle::FindOrCreate(mObject, ""));
     mRoot->attachChildren();
     endResetModel();
 }

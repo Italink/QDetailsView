@@ -79,6 +79,16 @@ QPropertyHandle* QPropertyHandle::FindOrCreate(QObject* inObject, const QString&
 	QPropertyHandle* handle = Find(inObject, inPropertyPath);
 	if (handle)
 		return handle;
+	if (inPropertyPath.isEmpty()) {
+		return new QPropertyHandle(
+			inObject,
+			inObject->metaObject()->metaType(),
+			inPropertyPath,
+			[inObject]() {return QVariant::fromValue(inObject); },
+			[inObject](QVariant var) {}
+		);
+	}
+
 	QStringList pathList = inPropertyPath.split(".");
 	int currIndex = 0;
 	QString toplevelProp = pathList[currIndex++].toLocal8Bit();
@@ -101,7 +111,7 @@ QPropertyHandle* QPropertyHandle::FindOrCreate(QObject* inObject, const QString&
 		const QString& currPropName = pathList[currIndex++];
 		QPropertyHandle* childHandle = handle->findChildHandle(currPropName);
 		if (!childHandle) {
-			childHandle = handle->createChildHandle(currPropName);
+			childHandle = handle->findOrCreateChildHandle(currPropName);
 		}
 		if (childHandle) {
 			handle = childHandle;
@@ -195,9 +205,9 @@ QPropertyHandle* QPropertyHandle::findChildHandle(const QString& inSubName)
 	return mImpl->findChildHandle(inSubName);
 }
 
-QPropertyHandle* QPropertyHandle::createChildHandle(const QString& inSubName)
+QPropertyHandle* QPropertyHandle::findOrCreateChildHandle(const QString& inSubName)
 {
-	return mImpl->createChildHandle(inSubName);
+	return mImpl->findOrCreateChildHandle(inSubName);
 }
 
 QQuickItem* QPropertyHandle::createNameEditor(QQuickItem* inParent)

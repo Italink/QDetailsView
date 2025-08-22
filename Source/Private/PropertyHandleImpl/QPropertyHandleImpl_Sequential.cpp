@@ -46,9 +46,9 @@ QQuickItem* QPropertyHandleImpl_Sequential::createValueEditor(QQuickItem* inPare
 	return nullptr;
 }
 
-QPropertyHandle* QPropertyHandleImpl_Sequential::createChildHandle(const QString& inSubName) {
+QPropertyHandle* QPropertyHandleImpl_Sequential::findOrCreateChildHandle(const QString& inSubName) {
 	int index = inSubName.toInt();
-	QPropertyHandle* handle = QPropertyHandle::Create(
+	QPropertyHandle* handle = QPropertyHandle::FindOrCreate(
 		mHandle->parent(),
 		mMetaSequence.valueMetaType(),
 		mHandle->createSubPath(inSubName),

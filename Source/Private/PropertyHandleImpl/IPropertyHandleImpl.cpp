@@ -11,7 +11,7 @@ QPropertyHandle* IPropertyHandleImpl::findChildHandle(const QString& inSubName)
 	return QPropertyHandle::Find(mHandle->parent(), mHandle->createSubPath(inSubName));
 }
 
-QPropertyHandle* IPropertyHandleImpl::createChildHandle(const QString& inSubName)
+QPropertyHandle* IPropertyHandleImpl::findOrCreateChildHandle(const QString& inSubName)
 {
 	return nullptr;
 }

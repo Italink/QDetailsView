@@ -45,7 +45,7 @@ public:
 	const QVariantHash& getMetaDataMap() const;
 
 	QPropertyHandle* findChildHandle(const QString& inSubName);
-	QPropertyHandle* createChildHandle(const QString& inSubName);
+	QPropertyHandle* findOrCreateChildHandle(const QString& inSubName);
 	QQuickItem* createNameEditor(QQuickItem* inParent);
 	QQuickItem* createValueEditor(QQuickItem* inParent);
 

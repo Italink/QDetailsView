@@ -10,53 +10,13 @@ QPropertyHandleImpl_Associative::QPropertyHandleImpl_Associative(QPropertyHandle
 	mMetaAssociation = iterable.metaContainer();
 }
 
-//void QPropertyHandleImpl_Associative::generateChildrenRow(QRowLayoutBuilder* Builder) {
-//	QVariant varMap = mHandle->getVar();
-//	QAssociativeIterable iterable = varMap.value<QAssociativeIterable>();
-//	for (auto iter = iterable.begin(); iter != iterable.end(); ++iter) {
-//		QString path = mHandle->getSubPath(iter.key().toString());
-//		QPropertyHandle* handle = QPropertyHandle::FindOrCreate(mHandle->parent(), path);
-//		if (handle) {
-//			Builder->addProperty(handle);
-//		}
-//	}
-//}
-
-//QWidget* QPropertyHandleImpl_Associative::generateValueWidget() {
-//	if (mHandle->hasMetaData("FixedSize")) {
-//		return IPropertyHandleImpl::generateValueWidget();
-//	}
-//	QSvgButton* btAppend = new QSvgButton(":/Resources/plus.png");
-//	btAppend->setFixedSize(20, 20);
-//	QObject::connect(btAppend, &QPushButton::clicked, [this](){
-//		QVariant varList = mHandle->getVar();
-//		QAssociativeIterable iterable = varList.value<QAssociativeIterable>();
-//		QString newKey = "Item0";
-//		int index = 0;
-//		while (iterable.containsKey(newKey)) {
-//			newKey = "Item" + QString::number(++index);
-//		}
-//		QVariant newValue = QPropertyHandle::createNewVariant(mMetaAssociation.mappedMetaType());
-//		appendItem(newKey, newValue);
-//	});
-//	QWidget* valueContent = new QWidget;
-//	valueContent->setSizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Expanding);
-//	QHBoxLayout* valueContentLayout = new QHBoxLayout(valueContent);
-//	valueContentLayout->setAlignment(Qt::AlignLeft);
-//	valueContentLayout->setContentsMargins(10, 2, 10, 2);
-//	valueContentLayout->setSpacing(2);
-//	valueContentLayout->addWidget(btAppend);
-//	mHandle->generateAttachButtonWidget(valueContentLayout);
-//	return valueContent;
-//}
-
 QQuickItem* QPropertyHandleImpl_Associative::createValueEditor(QQuickItem* inParent)
 {
 	return nullptr;
 }
 
-QPropertyHandle* QPropertyHandleImpl_Associative::createChildHandle(const QString& inKey) {
-	QPropertyHandle* handle = QPropertyHandle::Create(
+QPropertyHandle* QPropertyHandleImpl_Associative::findOrCreateChildHandle(const QString& inKey) {
+	QPropertyHandle* handle = QPropertyHandle::FindOrCreate(
 		mHandle->parent(),
 		mMetaAssociation.mappedMetaType(),
 		mHandle->createSubPath(inKey),
@@ -76,16 +36,6 @@ QPropertyHandle* QPropertyHandleImpl_Associative::createChildHandle(const QStrin
 			mHandle->setVar(varMap);
 		}
 	);
-	//if (!mHandle->hasMetaData("FixedSize")) {
-	//	handle->setAttachButtonWidgetCallback([inKey, this](QHBoxLayout* Layout) {
-	//		QSvgButton* deleteButton = new QSvgButton(":/Resources/delete.png");
-	//		deleteButton->setFixedSize(20, 20);
-	//		Layout->addWidget(deleteButton);
-	//		QObject::connect(deleteButton, &QSvgButton::clicked, [inKey, this]() {
-	//			removeItem(inKey);
-	//			});
-	//		});
-	//}
 	return handle;
 }
 

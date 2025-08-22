@@ -13,7 +13,7 @@ public:
 	void removeItem(QString inKey);
 protected:
 	QQuickItem* createValueEditor(QQuickItem* inParent)override;
-	QPropertyHandle* createChildHandle(const QString& inSubName) override;
+	QPropertyHandle* findOrCreateChildHandle(const QString& inSubName) override;
 private:
 	QMetaAssociation mMetaAssociation;
 };

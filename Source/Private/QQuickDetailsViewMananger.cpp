@@ -3,6 +3,7 @@
 #include "QQuickFunctionLibrary.h"
 #include <QRegularExpression>
 #include "QQuickDetailsView.h"
+#include "Customization/ClassLayoutCustomization_Default.h"
 
 QQuickDetailsViewManager* QQuickDetailsViewManager::Get()
 {
@@ -48,7 +49,7 @@ QQuickItem* QQuickDetailsViewManager::createValueEditor(QPropertyHandle* inHandl
 	return nullptr;
 }
 
-QSharedPointer<IDetailCustomization> QQuickDetailsViewManager::getCustomDetailLayout(const QMetaObject* InMetaObject)
+QSharedPointer<IClassLayoutCustomization> QQuickDetailsViewManager::getCustomDetailLayout(const QMetaObject* InMetaObject)
 {
 	for (const auto& It : mCustomClassLayoutMap.asKeyValueRange()) {
 		if (It.first == InMetaObject) {
@@ -60,7 +61,7 @@ QSharedPointer<IDetailCustomization> QQuickDetailsViewManager::getCustomDetailLa
 			return It.second();
 		}
 	}
-	return nullptr;
+	return QSharedPointer<ClassLayoutCustomization_Default>::create();
 }
 
 QSharedPointer<IPropertyTypeCustomization> QQuickDetailsViewManager::getCustomPropertyType(const QMetaType& InMetaType)
@@ -91,42 +92,6 @@ QSharedPointer<IPropertyTypeCustomization> QQuickDetailsViewManager::getCustomPr
 	}
 	return nullptr;
 }
-
-#define REGINTER_NUMBER_EDITOR_CREATOR(TypeName,DefaultPrecision) \
-	registerCustomPropertyValueEditorCreator(QMetaType::fromType<TypeName>(), [](QPropertyHandle* handle, QQuickItem* parent)->QQuickItem* { \
-		QQmlEngine* engine = qmlEngine(parent);\
-		QQmlContext* context = qmlContext(parent);\
-		QQmlComponent nameComp(engine);\
-		nameComp.setData(R"(
-					import QtQuick;
-					import QtQuick.Controls;
-					import "qrc:/Resources/Qml"
-					NumberBox{
-						anchors.verticalCenter: parent.verticalCenter
-						width: parent.width
-					}
-				)", QUrl());\
-		QVariantMap initialProperties; \
-		initialProperties["parent"] = QVariant::fromValue(parent);\
-		auto valueEditor = qobject_cast<QQuickItem*>(nameComp.createWithInitialProperties(initialProperties, context));\
-		valueEditor->setParentItem(parent);\
-		TypeName min = handle->getMetaData("Min").toDouble();\
-		TypeName max = handle->getMetaData("Max").toDouble();\
-		double step = handle->getMetaData("Step").toDouble();\
-		int precision = handle->getMetaData("Precision").toInt(); \
-		valueEditor->setProperty("step", step);\
-		valueEditor->setProperty("number", handle->getVar());\
-		valueEditor->setProperty("precision", precision == 0 ? DefaultPrecision:precision); \
-		if (min < max) {\
-			if(step <= 0.000001) valueEditor->setProperty("step", (max - min) / 1000); \
-			valueEditor->setProperty("min", min);\
-			valueEditor->setProperty("max", max);\
-			valueEditor->setProperty("isLimited", true);\
-		}\
-		connect(valueEditor, SIGNAL(valueChanged(QVariant)), handle, SLOT(setVar(QVariant))); \
-		connect(handle, SIGNAL(asRequestRollback(QVariant)), valueEditor, SLOT(setNumber(QVariant))); \
-		return valueEditor;\
-	});
 
 QQuickDetailsViewManager::QQuickDetailsViewManager()
 {

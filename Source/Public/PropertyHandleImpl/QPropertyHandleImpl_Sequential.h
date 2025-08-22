@@ -16,7 +16,7 @@ public:
 
 protected:
 	QQuickItem* createValueEditor(QQuickItem* inParent)override;
-	QPropertyHandle* createChildHandle(const QString& inSubName) override;
+	QPropertyHandle* findOrCreateChildHandle(const QString& inSubName) override;
 private:
 	QMetaSequence mMetaSequence;
 };

@@ -7,12 +7,13 @@ class QDETAILS_VIEW_API QPropertyHandleImpl_Object : public IPropertyHandleImpl 
 public:
 	QPropertyHandleImpl_Object(QPropertyHandle* inHandle);
 	QObject* getObject();
+	void* getGadget();
+	bool isGadget() const;
 	QObject* getOwnerObject();
 	const QMetaObject* getMetaObject() const;
-protected:
 	QPropertyHandle* findChildHandle(const QString& inSubName) override;
 	QQuickItem* createValueEditor(QQuickItem* inParent)override;
-	QPropertyHandle* createChildHandle(const QString& inSubName) override;
+	QPropertyHandle* findOrCreateChildHandle(const QString& inSubName) override;
 	void refreshObjectPtr();
 private:
 	QVariant mObjectHolder;

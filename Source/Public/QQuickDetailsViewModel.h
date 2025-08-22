@@ -8,7 +8,7 @@
 #include <QQuickItem>
 #include "QDetailsViewAPI.h"
 
-class QDetailsViewRow_Root;
+class QDetailsViewRow_Property;
 
 class QDETAILS_VIEW_API QQuickDetailsViewModel : public QAbstractItemModel {
     Q_OBJECT
@@ -29,7 +29,7 @@ public:
     QObject* getObject() const;
     void rebuildNode();
 private:
-    QSharedPointer<QDetailsViewRow_Root> mRoot;
+    QSharedPointer<QDetailsViewRow_Property> mRoot;
     QObject* mObject;
 };
 

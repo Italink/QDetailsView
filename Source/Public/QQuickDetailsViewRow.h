@@ -8,7 +8,7 @@
 #include <QQuickItem>
 #include "QPropertyHandle.h"
 #include "IPropertyTypeCustomization.h"
-#include "IDetailCustomization.h"
+#include "IClassLayoutCustomization.h"
 #include "QDetailsViewAPI.h"
 
 class QDETAILS_VIEW_API IDetailsViewRow {
@@ -24,30 +24,17 @@ protected:
     QList<QSharedPointer<IDetailsViewRow>> mChildren;
 };
 
-class QDETAILS_VIEW_API QDetailsViewRow_Root : public IDetailsViewRow {
-	friend class QQuickDetailsViewModel;
-public:
-    virtual QString name() { return "Root"; }
-	virtual void setupItem(QQuickItem* inParent) {}
-	void addChild(QSharedPointer<IDetailsViewRow> inChild);
-    void setObject(QObject* inObject);
-    void attachChildren();
-protected:
-    QObject* mObject;
-    QSharedPointer<IDetailCustomization> mClassLayoutCustomization;
-};
-
 class QDETAILS_VIEW_API QDetailsViewRow_Property : public IDetailsViewRow {
 public:
     QDetailsViewRow_Property(QPropertyHandle* inHandle);
-protected:
+    void setHandle(QPropertyHandle* inHandle);
     QString name() override { return mHandle->getName(); }
     void setupItem(QQuickItem* inParent) override;
-    void attachChildren();
+    void attachChildren() override;
 protected:
     QPropertyHandle* mHandle = nullptr;
     QSharedPointer<IPropertyTypeCustomization> mPropertyTypeCustomization;
-    QSharedPointer<IDetailCustomization> mClassLayoutCustomization;
+    QSharedPointer<IClassLayoutCustomization> mClassLayoutCustomization;
 };
 
 class QDETAILS_VIEW_API QDetailsViewRow_Custom : public IDetailsViewRow {

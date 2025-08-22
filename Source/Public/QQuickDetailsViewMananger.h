@@ -7,7 +7,7 @@
 #include <QMetaType>
 #include <QQmlEngine>
 #include <QQuickItem>
-#include "IDetailCustomization.h"
+#include "IClassLayoutCustomization.h"
 #include "IPropertyTypeCustomization.h"
 #include "QDetailsViewAPI.h"
 
@@ -15,7 +15,7 @@ class QPropertyHandle;
 
 class QDETAILS_VIEW_API QQuickDetailsViewManager : public QObject{
 public:
-	using CustomClassLayoutCreator = std::function<QSharedPointer<IDetailCustomization>()>;
+	using CustomClassLayoutCreator = std::function<QSharedPointer<IClassLayoutCustomization>()>;
 	using CustomPropertyTypeLayoutCreator = std::function<QSharedPointer<IPropertyTypeCustomization>()>;
 	using CustomPropertyValueWidgetCreator = std::function<QQuickItem* (QPropertyHandle*, QQuickItem*)>;
 
@@ -23,11 +23,11 @@ public:
 
 	void registerQml();
 
-	template<typename IDetailCustomizationType>
+	template<typename IClassLayoutCustomizationType>
 	void registerCustomClassLayout(const QMetaObject* InMetaObject)
 	{
 		mCustomClassLayoutMap.insert(InMetaObject, []() {
-			return QSharedPointer<IDetailCustomizationType>::create();
+			return QSharedPointer<IClassLayoutCustomizationType>::create();
 		});
 	}
 	void unregisterCustomClassLayout(const QMetaObject* InMetaObject);
@@ -44,7 +44,7 @@ public:
 	void unregisterCustomPropertyValueEditorCreator(const QMetaType& inMetaType);
 
 	QQuickItem* createValueEditor(QPropertyHandle* inHandle, QQuickItem* parent);
-	QSharedPointer<IDetailCustomization> getCustomDetailLayout(const QMetaObject* InMetaObject);
+	QSharedPointer<IClassLayoutCustomization> getCustomDetailLayout(const QMetaObject* InMetaObject);
 	QSharedPointer<IPropertyTypeCustomization> getCustomPropertyType(const QMetaType& InMetaType);
 protected:
 	QQuickDetailsViewManager();

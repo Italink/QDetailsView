@@ -39,6 +39,18 @@ QObject* QPropertyHandleImpl_Object::getObject()
 	return nullptr;
 }
 
+void* QPropertyHandleImpl_Object::getGadget()
+{
+	return mObjectPtr;
+}
+
+bool QPropertyHandleImpl_Object::isGadget() const
+{
+	if (mMetaObject->inherits(&QObject::staticMetaObject))
+		return false;
+	return mObjectPtr != nullptr;
+}
+
 QObject* QPropertyHandleImpl_Object::getOwnerObject()
 {
 	return mOwnerObject;
@@ -83,7 +95,7 @@ QQuickItem* QPropertyHandleImpl_Object::createValueEditor(QQuickItem* inParent)
 	return nullptr;
 }
 
-QPropertyHandle* QPropertyHandleImpl_Object::createChildHandle(const QString& inSubName) {
+QPropertyHandle* QPropertyHandleImpl_Object::findOrCreateChildHandle(const QString& inSubName) {
 	QPropertyHandle* handle = nullptr;
 	if (mObjectPtr == nullptr)
 		return handle;
@@ -92,7 +104,7 @@ QPropertyHandle* QPropertyHandleImpl_Object::createChildHandle(const QString& in
 		QMetaProperty prop = mMetaObject->property(i);
 		if(prop.name() == inSubName){
 			if(mObjectPtr == mOwnerObject){
-				handle = QPropertyHandle::Create(
+				handle = QPropertyHandle::FindOrCreate(
 					mOwnerObject,
 					prop.metaType(),
 					propertyPath,
@@ -105,7 +117,7 @@ QPropertyHandle* QPropertyHandleImpl_Object::createChildHandle(const QString& in
 				);
 			}
 			else{
-				handle = QPropertyHandle::Create(
+				handle = QPropertyHandle::FindOrCreate(
 					mOwnerObject,
 					prop.metaType(),
 					propertyPath,
