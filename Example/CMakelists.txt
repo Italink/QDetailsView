@@ -1,0 +1,16 @@
+add_executable(QDetailsViewExample
+    main.cpp
+    TestObject.h
+)
+
+set_property(TARGET QDetailsViewExample PROPERTY AUTOMOC ON)
+
+target_link_libraries(QDetailsViewExample PUBLIC QDetailsView Qt::Widgets)
+
+set_target_properties(
+    QDetailsView QDetailsViewExample
+    PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/Binaries"  
+    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/Binaries"  
+    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/Lib"  
+)

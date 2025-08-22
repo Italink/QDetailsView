@@ -1,0 +1,21 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Resources/Qml/ColorBox.qml</file>
+        <file>Resources/Qml/NumberBox.qml</file>
+        <file>Resources/Qml/TextBox.qml</file>
+        <file>Resources/Qml/TextComboBox.qml</file>
+        <file>Resources/Qml/Vec2Box.qml</file>
+        <file>Resources/Qml/Vec3Box.qml</file>
+        <file>Resources/Qml/Vec4Box.qml</file>
+        <file>Resources/Icon/arrow-left-l.png</file>
+        <file>Resources/Icon/arrow-right-l.png</file>
+        <file>Resources/Icon/close.png</file>
+        <file>Resources/Icon/delete.png</file>
+        <file>Resources/Icon/down.png</file>
+        <file>Resources/Icon/expand.png</file>
+        <file>Resources/Icon/plus.png</file>
+        <file>Resources/Icon/reset.png</file>
+        <file>Resources/Icon/unexpand.png</file>
+        <file>Resources/Icon/up.png</file>
+    </qresource>
+</RCC>
