@@ -8,7 +8,6 @@
 #include <QQuickItem>
 #include "QPropertyHandle.h"
 #include "IPropertyTypeCustomization.h"
-#include "IClassLayoutCustomization.h"
 #include "QDetailsViewAPI.h"
 
 class QDETAILS_VIEW_API IDetailsViewRow {
@@ -34,7 +33,6 @@ public:
 protected:
     QPropertyHandle* mHandle = nullptr;
     QSharedPointer<IPropertyTypeCustomization> mPropertyTypeCustomization;
-    QSharedPointer<IClassLayoutCustomization> mClassLayoutCustomization;
 };
 
 class QDETAILS_VIEW_API QDetailsViewRow_Custom : public IDetailsViewRow {

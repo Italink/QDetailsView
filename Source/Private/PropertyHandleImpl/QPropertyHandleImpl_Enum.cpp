@@ -26,7 +26,7 @@ QQuickItem* QPropertyHandleImpl_Enum::createValueEditor(QQuickItem* inParent)
 	comp.setData(R"(
 					import QtQuick;
 					import QtQuick.Controls;
-					import "qrc:/Resources/Qml"
+					import "qrc:/Resources/Qml/ValueEditor"
 					TextComboBox{
 						width: parent.width
 					}

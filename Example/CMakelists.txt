@@ -5,7 +5,15 @@ add_executable(QDetailsViewExample
 
 set_property(TARGET QDetailsViewExample PROPERTY AUTOMOC ON)
 
-target_link_libraries(QDetailsViewExample PUBLIC QDetailsView Qt::Widgets)
+find_package(Qt6 REQUIRED COMPONENTS QuickControls2)
+
+target_link_libraries(QDetailsViewExample PUBLIC QDetailsView Qt::Widgets 	Qt::QuickWidgets 
+	Qt::QuickPrivate
+	Qt::QuickTemplates2
+	Qt::QuickTemplates2Private
+    Qt::QuickControls2
+
+)
 
 set_target_properties(
     QDetailsView QDetailsViewExample

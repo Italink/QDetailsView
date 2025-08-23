@@ -7,7 +7,6 @@
 #include <QMetaType>
 #include <QQmlEngine>
 #include <QQuickItem>
-#include "IClassLayoutCustomization.h"
 #include "IPropertyTypeCustomization.h"
 #include "QDetailsViewAPI.h"
 
@@ -15,7 +14,6 @@ class QPropertyHandle;
 
 class QDETAILS_VIEW_API QQuickDetailsViewManager : public QObject{
 public:
-	using CustomClassLayoutCreator = std::function<QSharedPointer<IClassLayoutCustomization>()>;
 	using CustomPropertyTypeLayoutCreator = std::function<QSharedPointer<IPropertyTypeCustomization>()>;
 	using CustomPropertyValueWidgetCreator = std::function<QQuickItem* (QPropertyHandle*, QQuickItem*)>;
 
@@ -23,11 +21,11 @@ public:
 
 	void registerQml();
 
-	template<typename IClassLayoutCustomizationType>
+	template<typename IPropertyTypeCustomizationType>
 	void registerCustomClassLayout(const QMetaObject* InMetaObject)
 	{
-		mCustomClassLayoutMap.insert(InMetaObject, []() {
-			return QSharedPointer<IClassLayoutCustomizationType>::create();
+		mCustomClassTypeLayoutMap.insert(InMetaObject, []() {
+			return QSharedPointer<IPropertyTypeCustomizationType>::create();
 		});
 	}
 	void unregisterCustomClassLayout(const QMetaObject* InMetaObject);
@@ -44,14 +42,13 @@ public:
 	void unregisterCustomPropertyValueEditorCreator(const QMetaType& inMetaType);
 
 	QQuickItem* createValueEditor(QPropertyHandle* inHandle, QQuickItem* parent);
-	QSharedPointer<IClassLayoutCustomization> getCustomDetailLayout(const QMetaObject* InMetaObject);
-	QSharedPointer<IPropertyTypeCustomization> getCustomPropertyType(const QMetaType& InMetaType);
+	QSharedPointer<IPropertyTypeCustomization> getCustomPropertyType(QPropertyHandle* inHandle);
 protected:
 	QQuickDetailsViewManager();
 	void RegisterBasicTypeEditor();
 private:
-	QHash<const QMetaObject*, CustomClassLayoutCreator> mCustomClassLayoutMap;
-	QHash<QMetaType, CustomPropertyTypeLayoutCreator  > mCustomPropertyTypeLayoutMap;
+	QHash<const QMetaObject*, CustomPropertyTypeLayoutCreator> mCustomClassTypeLayoutMap;
+	QHash<QMetaType, CustomPropertyTypeLayoutCreator> mCustomPropertyTypeLayoutMap;
 	QHash<QMetaType, CustomPropertyValueWidgetCreator> mPropertyValueEditorCreatorMap;
 };
 

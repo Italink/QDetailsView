@@ -3,7 +3,11 @@
 #include "QQuickFunctionLibrary.h"
 #include <QRegularExpression>
 #include "QQuickDetailsView.h"
-#include "Customization/ClassLayoutCustomization_Default.h"
+#include "Customization/PropertyTypeCustomization_Sequential.h"
+#include "Customization/PropertyTypeCustomization_Associative.h"
+#include "Customization/PropertyTypeCustomization_ObjectDefault.h"
+#include "Customization/PropertyTypeCustomization_Matrix4x4.h"
+#include <QMatrix4x4>
 
 QQuickDetailsViewManager* QQuickDetailsViewManager::Get()
 {
@@ -18,7 +22,7 @@ void QQuickDetailsViewManager::registerQml()
 
 void QQuickDetailsViewManager::unregisterCustomClassLayout(const QMetaObject* InMetaObject)
 {
-	mCustomClassLayoutMap.remove(InMetaObject);
+	mCustomClassTypeLayoutMap.remove(InMetaObject);
 }
 
 void QQuickDetailsViewManager::unregisterCustomPropertyTypeLayout(const QMetaType& InMetaType)
@@ -49,45 +53,52 @@ QQuickItem* QQuickDetailsViewManager::createValueEditor(QPropertyHandle* inHandl
 	return nullptr;
 }
 
-QSharedPointer<IClassLayoutCustomization> QQuickDetailsViewManager::getCustomDetailLayout(const QMetaObject* InMetaObject)
+QSharedPointer<IPropertyTypeCustomization> QQuickDetailsViewManager::getCustomPropertyType(QPropertyHandle* inHandle)
 {
-	for (const auto& It : mCustomClassLayoutMap.asKeyValueRange()) {
-		if (It.first == InMetaObject) {
-			return It.second();
+	if (inHandle->getPropertyType() == QPropertyHandle::Sequential) {
+		return QSharedPointer<PropertyTypeCustomization_Sequential>::create();
+	}
+	else if (inHandle->getPropertyType() == QPropertyHandle::Associative) {
+		return QSharedPointer<PropertyTypeCustomization_Associative>::create();
+	}
+	else if (inHandle->getPropertyType() == QPropertyHandle::Object) {
+		const QMetaObject* metaObject = inHandle->metaObject();
+		for (const auto& It : mCustomClassTypeLayoutMap.asKeyValueRange()) {
+			if (It.first == metaObject) {
+				return It.second();
+			}
 		}
-	}
-	for (const auto& It : mCustomClassLayoutMap.asKeyValueRange()) {
-		if (InMetaObject->inherits(It.first)) {
-			return It.second();
+		for (const auto& It : mCustomClassTypeLayoutMap.asKeyValueRange()) {
+			if (metaObject->inherits(It.first)) {
+				return It.second();
+			}
 		}
+		return QSharedPointer<PropertyTypeCustomization_ObjectDefault>::create();
 	}
-	return QSharedPointer<ClassLayoutCustomization_Default>::create();
-}
-
-QSharedPointer<IPropertyTypeCustomization> QQuickDetailsViewManager::getCustomPropertyType(const QMetaType& InMetaType)
-{
-	for (const auto& It : mCustomPropertyTypeLayoutMap.asKeyValueRange()) {
-		if (It.first == InMetaType) {
-			return It.second();
+	else if (inHandle->getPropertyType() == QPropertyHandle::RawType) {
+		const QMetaType& metaType = inHandle->getType();
+		for (const auto& It : mCustomPropertyTypeLayoutMap.asKeyValueRange()) {
+			if (It.first == metaType) {
+				return It.second();
+			}
 		}
-	}
-	const QMetaObject* Child = nullptr;
-	QRegularExpression reg("QSharedPointer\\<(.+)\\>");
-	QRegularExpressionMatch match = reg.match(InMetaType.name());
-	QStringList matchTexts = match.capturedTexts();
-	QMetaType innerMetaType;
-	if (!matchTexts.isEmpty()) {
-		innerMetaType = QMetaType::fromName((matchTexts.back()).toLocal8Bit());
-		Child = innerMetaType.metaObject();
-	}
-	else {
-		Child = InMetaType.metaObject();
-	}
-
-	for (const auto& It : mCustomPropertyTypeLayoutMap.asKeyValueRange()) {
-		const QMetaObject* Parent = It.first.metaObject();
-		if (Parent && Child && Child->inherits(Parent)) {
-			return It.second();
+		const QMetaObject* Child = nullptr;
+		QRegularExpression reg("QSharedPointer\\<(.+)\\>");
+		QRegularExpressionMatch match = reg.match(metaType.name());
+		QStringList matchTexts = match.capturedTexts();
+		QMetaType innerMetaType;
+		if (!matchTexts.isEmpty()) {
+			innerMetaType = QMetaType::fromName((matchTexts.back()).toLocal8Bit());
+			Child = innerMetaType.metaObject();
+		}
+		else {
+			Child = metaType.metaObject();
+		}
+		for (const auto& It : mCustomPropertyTypeLayoutMap.asKeyValueRange()) {
+			const QMetaObject* Parent = It.first.metaObject();
+			if (Parent && Child && Child->inherits(Parent)) {
+				return It.second();
+			}
 		}
 	}
 	return nullptr;
@@ -96,5 +107,7 @@ QSharedPointer<IPropertyTypeCustomization> QQuickDetailsViewManager::getCustomPr
 QQuickDetailsViewManager::QQuickDetailsViewManager()
 {
 	RegisterBasicTypeEditor();
+
+	registerCustomPropertyTypeLayout<QMatrix4x4, PropertyTypeCustomization_Matrix4x4>();
 }
 

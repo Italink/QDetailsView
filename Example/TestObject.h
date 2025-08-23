@@ -1,11 +1,12 @@
 #ifndef TestObject_h__
 #define TestObject_h__
 
-#include "QObject"
-#include "qvectornd.h"
-#include "QFile"
-#include "QDir"
-#include "QColor"
+#include <QObject>
+#include <qvectornd.h>
+#include <QFile>
+#include <QDir>
+#include <QColor>
+#include <QMatrix4x4>
 
 #define Q_PROPERTY_VAR(Type,Name)\
     Q_PROPERTY(Type Name READ get_##Name WRITE set_##Name) \
@@ -98,19 +99,35 @@ public:
 	Q_PROPERTY_VAR(QVector2D, Vec2);
 	Q_PROPERTY_VAR(QVector3D, Vec3);
 	Q_PROPERTY_VAR(QVector4D, Vec4);
+	Q_PROPERTY_VAR(QMatrix4x4, Mat4);
 	Q_PROPERTY_VAR(QColor, Color);
 	Q_PROPERTY_VAR(QList<QColor>, ColorList) = { Qt::red,Qt::green,Qt::blue };
 	Q_PROPERTY_VAR(std::vector<QColor>, StdColorList) = { Qt::red,Qt::green,Qt::blue };
 
 	Q_PROPERTY(QMap<QString, QColor> ColorMap READ GetColorMap WRITE SetColorMap)
 
-		QMap<QString, QColor> GetColorMap() const { return ColorMap; }
+	QMap<QString, QColor> GetColorMap() const { return ColorMap; }
 	void SetColorMap(QMap<QString, QColor> val) {
 		ColorMap = val;
 		qDebug() << "ColorMap: " << ColorMap;
 	}
 	QMap<QString, QColor> ColorMap = { {"Red",Qt::red},{"Green",Qt::green},{"Blue",Qt::blue} };
 
+
+	Q_PROPERTY_VAR(TestInlineGadget, InlineGadget);
+	//Q_PROPERTY_VAR(TestInlineGadget*, InlineGadgetPtr) = new TestInlineGadget;
+	//Q_PROPERTY_VAR(QSharedPointer<TestInlineGadget>, InlineGadgetSPtr) = QSharedPointer<TestInlineGadget>::create();
+	//Q_PROPERTY_VAR(TestInlineObject*, InlineObject) = new TestInlineObject;
+	//Q_PROPERTY_VAR(QSharedPointer<TestInlineObject>, InlineObjectSPtr) = QSharedPointer<TestInlineObject>::create();
+	//Q_PROPERTY_VAR(QList<TestInlineObject*>, InlineObjectList) = { };
+	//Q_PROPERTY_VAR(QList<TestInlineGadget>, InlineGadgetList) = { };
+	//Q_PROPERTY_VAR(QList<TestInlineGadget*>, InlineGadgetPtrList) = { };
+	//Q_PROPERTY_VAR(QList<QSharedPointer<TestInlineGadget>>, InlineGadgetSPtrList) = { };
+
+	//Q_PROPERTY(QMap<QString, QSharedPointer<TestInlineGadget>> InlineGadgetSPtrMap READ GetInlineGadgetSPtrMap WRITE SetInlineGadgetSPtrMap)
+	//	QMap<QString, QSharedPointer<TestInlineGadget>> GetInlineGadgetSPtrMap() const { return InlineGadgetSPtrMap; }
+	//void SetInlineGadgetSPtrMap(QMap<QString, QSharedPointer<TestInlineGadget>> val) { InlineGadgetSPtrMap = val; }
+	//QMap<QString, QSharedPointer<TestInlineGadget>> InlineGadgetSPtrMap;
 };
 
 Q_DECLARE_METATYPE(QSharedPointer<TestInlineGadget>);

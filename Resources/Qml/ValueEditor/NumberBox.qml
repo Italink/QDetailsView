@@ -4,7 +4,7 @@ import QtQuick.Controls;
 Item{
     id: control
     implicitHeight: 25
-    implicitWidth: 150
+    implicitWidth: 100
     property bool isLimited: false
     property bool isHovered: false
     property var min:0
@@ -35,6 +35,7 @@ Item{
         anchors.margins: 2
         border.color: "transparent"
         border.width: 1
+        color: "#EEEEEE"
         clip: true
 
         Rectangle{

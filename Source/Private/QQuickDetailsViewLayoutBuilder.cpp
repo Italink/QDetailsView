@@ -83,6 +83,18 @@ QPair<QQuickItem*, QQuickItem*> QQuickDetailsViewHeaderRowBuilder::makeNameValue
                     }
                 }
             }
+            Rectangle {
+                id: gradientBox
+                visible: detailsDelegate.depth > 0  
+                width: 5
+                x: padding + (detailsDelegate.depth * detailsDelegate.indent)
+                height: parent.height
+                gradient: Gradient {
+                    orientation: Gradient.Horizontal 
+                    GradientStop { position: 0.0; color: Qt.rgba(0, 0, 0, 0) }  
+                    GradientStop { position: 1.0; color: Qt.rgba(0, 0, 0, 0.2) } 
+                }
+            }
         }
     )", QUrl());
     QQuickItem* slotItem = qobject_cast<QQuickItem*>(rootComp.create(newContext));

@@ -11,7 +11,7 @@
 		nameComp.setData(R"(
 					import QtQuick;
 					import QtQuick.Controls;
-					import "qrc:/Resources/Qml"
+					import "qrc:/Resources/Qml/ValueEditor"
 					NumberBox{
 						anchors.verticalCenter: parent.verticalCenter
 						width: parent.width
@@ -52,7 +52,7 @@ void QQuickDetailsViewManager::RegisterBasicTypeEditor() {
 		comp.setData(R"(
 					import QtQuick;
 					import QtQuick.Controls;
-					import "qrc:/Resources/Qml"
+					import "qrc:/Resources/Qml/ValueEditor"
 					TextBox{
 					     anchors.verticalCenter: parent.verticalCenter
 						 width: parent.width
@@ -77,7 +77,7 @@ void QQuickDetailsViewManager::RegisterBasicTypeEditor() {
 		comp.setData(R"(
 					import QtQuick;
 					import QtQuick.Controls;
-					import "qrc:/Resources/Qml"
+					import "qrc:/Resources/Qml/ValueEditor"
 					Vec4Box{
 						anchors.verticalCenter: parent.verticalCenter
 						width: parent.width
@@ -101,7 +101,7 @@ void QQuickDetailsViewManager::RegisterBasicTypeEditor() {
 		comp.setData(R"(
 					import QtQuick;
 					import QtQuick.Controls;
-					import "qrc:/Resources/Qml"
+					import "qrc:/Resources/Qml/ValueEditor"
 					Vec3Box{
 						 anchors.verticalCenter: parent.verticalCenter
 						 width: parent.width
@@ -125,7 +125,7 @@ void QQuickDetailsViewManager::RegisterBasicTypeEditor() {
 		comp.setData(R"(
 					import QtQuick;
 					import QtQuick.Controls;
-					import "qrc:/Resources/Qml"
+					import "qrc:/Resources/Qml/ValueEditor"
 					Vec2Box{
 						 anchors.verticalCenter: parent.verticalCenter
 						 width: parent.width
@@ -149,7 +149,7 @@ void QQuickDetailsViewManager::RegisterBasicTypeEditor() {
 		comp.setData(R"(
 					import QtQuick;
 					import QtQuick.Controls;
-					import "qrc:/Resources/Qml"
+					import "qrc:/Resources/Qml/ValueEditor"
 					ColorBox{
 						 anchors.verticalCenter: parent.verticalCenter
 						 width: parent.width

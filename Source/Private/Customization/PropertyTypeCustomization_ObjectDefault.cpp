@@ -1,8 +1,8 @@
-#include "ClassLayoutCustomization_Default.h"
+#include "PropertyTypeCustomization_ObjectDefault.h"
 #include "QQuickDetailsViewLayoutBuilder.h"
 #include "QPropertyHandle.h"
 
-void ClassLayoutCustomization_Default::customizeLayout(QPropertyHandle* inPropertyHandle, QQuickDetailsViewLayoutBuilder* inBuilder)
+void PropertyTypeCustomization_ObjectDefault::customizeChildren(QPropertyHandle* inPropertyHandle, QQuickDetailsViewLayoutBuilder* inBuilder)
 {
 	auto ObjectHandle = inPropertyHandle->asObject();
 	const QMetaObject* metaObject = ObjectHandle->getMetaObject();
