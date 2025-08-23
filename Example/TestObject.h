@@ -91,11 +91,8 @@ public:
 	Q_PROPERTY_VAR(float, Float) = 1.23f;
 	Q_PROPERTY_VAR(double, LimitedDouble) = 5;
 	Q_PROPERTY_VAR(TestEnum, Enum) = TestEnum::One;
-	Q_PROPERTY_VAR(QString, QtString);
-	Q_PROPERTY_VAR(std::string, StdString);
-	Q_PROPERTY_VAR(QString, AsMultiLineString);
-	Q_PROPERTY_VAR(QString, AsPath);
-	Q_PROPERTY_VAR(QString, AsCombo) = "A";
+	Q_PROPERTY_VAR(QString, String);
+	Q_PROPERTY_VAR(QDir, Directory);
 	Q_PROPERTY_VAR(QVector2D, Vec2);
 	Q_PROPERTY_VAR(QVector3D, Vec3);
 	Q_PROPERTY_VAR(QVector4D, Vec4);
@@ -114,10 +111,10 @@ public:
 	QMap<QString, QColor> ColorMap = { {"Red",Qt::red},{"Green",Qt::green},{"Blue",Qt::blue} };
 
 
-	//Q_PROPERTY_VAR(TestInlineGadget, InlineGadget);
+	Q_PROPERTY_VAR(TestInlineGadget, InlineGadget);
 	//Q_PROPERTY_VAR(TestInlineGadget*, InlineGadgetPtr) = new TestInlineGadget;
 	//Q_PROPERTY_VAR(QSharedPointer<TestInlineGadget>, InlineGadgetSPtr) = QSharedPointer<TestInlineGadget>::create();
-	//Q_PROPERTY_VAR(TestInlineObject*, InlineObject) = new TestInlineObject;
+	Q_PROPERTY_VAR(TestInlineObject*, InlineObject) = new TestInlineObject;
 	//Q_PROPERTY_VAR(QSharedPointer<TestInlineObject>, InlineObjectSPtr) = QSharedPointer<TestInlineObject>::create();
 	//Q_PROPERTY_VAR(QList<TestInlineObject*>, InlineObjectList) = { };
 	//Q_PROPERTY_VAR(QList<TestInlineGadget>, InlineGadgetList) = { };

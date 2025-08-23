@@ -13,6 +13,8 @@ public:
 
 	Q_INVOKABLE QString numberToString(QVariant var,int precision);
 	Q_INVOKABLE void setCursorPos(qreal x, qreal y);
+	Q_INVOKABLE void setOverrideCursorShape(Qt::CursorShape shape);
+	Q_INVOKABLE void restoreOverrideCursorShape();
 	Q_INVOKABLE void setCursorPosTest(QQuickItem* item, qreal x, qreal y);
 };
 

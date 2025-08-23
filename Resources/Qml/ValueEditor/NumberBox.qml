@@ -127,16 +127,18 @@ Item{
                             var global = dragArea.mapToGlobal(lastPressX, lastPressY)
                             var local = dragArea.mapFromGlobal(global.x,global.y)
                             helper.setCursorPos(global.x,global.y)
-                            lastPressX = mouse.x
-                            lastPressY = mouse.y
                         }
                         else{
                             var xPercent = Math.max(0, Math.min(1, mouse.x / dragArea.width))
-                        
                             var range = max - min
                             var newValue = min + xPercent * range
-                        
                             control.setNumber(newValue)
+                            const validMouseX = Math.max (0, Math.min (dragArea.width, mouse.x));
+                            const validMouseY = Math.max (0, Math.min (dragArea.height, mouse.y));
+                            if (mouse.x !== validMouseX || mouse.y !== validMouseY) {
+                                const validGlobalPos = dragArea.mapToGlobal (validMouseX, validMouseY);
+                                helper.setCursorPos (validGlobalPos.x, validGlobalPos.y);
+                            }
                         }
                     }
                 }

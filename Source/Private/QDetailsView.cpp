@@ -4,6 +4,8 @@
 #include <QQmlEngine>
 #include <QQuickItem>
 #include <QUrl>
+#include <QtQuickControls2/QQuickStyle>
+
 
 QDetailsView::QDetailsView(QWidget* parent) 
 	: QWidget(parent)
@@ -11,6 +13,9 @@ QDetailsView::QDetailsView(QWidget* parent)
 	, mQuickDetailsView(nullptr)
 {
 	setMinimumSize(200, 200);
+
+	QQuickStyle::setStyle("Basic");
+
 	qmlRegisterType<QQuickDetailsView>("QtQuick.DetailsView", 1, 0, "DetailsView");
 
 	qmlRegisterSingletonType(QUrl("qrc:/Resources/Qml/ColorPalette/ColorPalette.qml"),
@@ -33,18 +38,28 @@ QDetailsView::QDetailsView(QWidget* parent)
 
 	const QString qmlContent = R"(
         import QtQuick 
+		import QtQuick.Controls
         import QtQuick.DetailsView 
 
+
         DetailsView {
+			id: detailsView 
             anchors.fill: parent
 			boundsBehavior: Flickable.OvershootBounds
+			ScrollBar.vertical: ScrollBar {
+				parent: detailsView.parent
+				width : 10
+				anchors.top: detailsView.top
+				anchors.right: detailsView.right
+				anchors.bottom: detailsView.bottom
+			}
         }
     )";
 
 	QQmlComponent component(mQuickWidget->engine());
 	component.setData(qmlContent.toUtf8(), QUrl(""));
-
 	QObject* rootObject = component.create();
+	qDebug() << component.errorString();
 	if (rootObject) {
 		mQuickWidget->setSource(QUrl());
 		mQuickWidget->engine()->setObjectOwnership(rootObject, QQmlEngine::CppOwnership);

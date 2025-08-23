@@ -23,6 +23,7 @@ Item{
             id: lineEditor
             enabled: true
             clip: true
+            padding: 3
             anchors.fill: parent
             anchors.leftMargin: 2
             anchors.rightMargin: 2

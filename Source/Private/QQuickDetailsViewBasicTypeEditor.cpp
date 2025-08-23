@@ -54,7 +54,7 @@ void QQuickDetailsViewManager::RegisterBasicTypeEditor() {
 					import QtQuick;
 					import QtQuick.Controls;
 					import "qrc:/Resources/Qml/ValueEditor"
-					TextBox{
+					MultiLineTextBox{
 					     anchors.verticalCenter: parent.verticalCenter
 						 width: parent.width
 					}

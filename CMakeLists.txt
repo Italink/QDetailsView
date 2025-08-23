@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.12)
 
 project(QDetailsView CXX)
 
-find_package(Qt6 COMPONENTS Core Widgets Gui QuickWidgets QuickTemplates2 REQUIRED)
+find_package(Qt6 COMPONENTS Core Widgets Gui QuickWidgets QuickTemplates2 QuickControls2 REQUIRED)
 
 qt6_add_resources(QRC_FILE Resources.qrc)
 
@@ -27,6 +27,7 @@ target_link_libraries(QDetailsView PUBLIC
 	Qt::QuickPrivate
 	Qt::QuickTemplates2
 	Qt::QuickTemplates2Private
+	Qt::QuickControls2
 )
 
 target_include_directories(QDetailsView PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Source/Public)

@@ -15,6 +15,7 @@ QPair<QQuickItem*, QQuickItem*> QQuickDetailsViewHeaderRowBuilder::makeNameValue
 	rootComp.setData(R"(
         import QtQuick;
         import QtQuick.Controls;
+        import Qt5Compat.GraphicalEffects
         import ColorPalette
         Rectangle{
             id: topLevelRect  
@@ -38,6 +39,12 @@ QPair<QQuickItem*, QQuickItem*> QQuickDetailsViewHeaderRowBuilder::makeNameValue
 
                 width: 12
                 height: 12
+                ColorOverlay {
+                    anchors.fill: parent
+                    source: parent
+                    color: ColorPalette.theme.rowIndicator  
+                    opacity: 1.0 
+                }
             }
             Item{
                 id: nameEditorContent
@@ -60,6 +67,7 @@ QPair<QQuickItem*, QQuickItem*> QQuickDetailsViewHeaderRowBuilder::makeNameValue
                 id: splitter
                 width: 3
                 height: parent.height
+                color : ColorPalette.theme.rowBackground
                 x: detailsView.SpliterPencent * detailsView.width - 1  
     
                 Rectangle{

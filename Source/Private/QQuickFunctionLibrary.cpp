@@ -1,5 +1,6 @@
 ﻿#include "QQuickFunctionLibrary.h"
 #include <QCursor>
+#include <QApplication>
 
 QQuickFunctionLibrary* QQuickFunctionLibrary::Get()
 {
@@ -15,8 +16,17 @@ QString QQuickFunctionLibrary::numberToString(QVariant var, int precision)
 
 void QQuickFunctionLibrary::setCursorPos(qreal x, qreal y)
 {
-	//qDebug() << QCursor::pos();
-	//QCursor::setPos(x, y);
+	QCursor::setPos(x, y);
+}
+
+void QQuickFunctionLibrary::setOverrideCursorShape(Qt::CursorShape shape)
+{
+	qApp->setOverrideCursor(shape);
+}
+
+void QQuickFunctionLibrary::restoreOverrideCursorShape()
+{
+	qApp->restoreOverrideCursor();
 }
 
 void QQuickFunctionLibrary::setCursorPosTest(QQuickItem* item, qreal x, qreal y)

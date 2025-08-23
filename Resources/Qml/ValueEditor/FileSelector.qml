@@ -4,7 +4,7 @@ import QtQuick.Dialogs
 
 Item{
     id: control
-    property color value
+    property var value
     implicitHeight: 25
     signal asValueChanged(text:var)
 

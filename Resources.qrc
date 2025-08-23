@@ -12,7 +12,6 @@
         <file>Resources/Icon/up.png</file>
         <file>Resources/Qml/ValueEditor/ColorBox.qml</file>
         <file>Resources/Qml/ValueEditor/NumberBox.qml</file>
-        <file>Resources/Qml/ValueEditor/TextBox.qml</file>
         <file>Resources/Qml/ValueEditor/TextComboBox.qml</file>
         <file>Resources/Qml/ValueEditor/Vec2Box.qml</file>
         <file>Resources/Qml/ValueEditor/Vec3Box.qml</file>
@@ -20,5 +19,9 @@
         <file>Resources/Qml/ColorPalette/ColorPalette.qml</file>
         <file>Resources/Qml/ColorPalette/ColorPalette_Dark.qml</file>
         <file>Resources/Qml/ColorPalette/ColorPalette_Light.qml</file>
+        <file>Resources/Qml/ValueEditor/DirectorySelector.qml</file>
+        <file>Resources/Qml/ValueEditor/FileSelector.qml</file>
+        <file>Resources/Qml/ValueEditor/LineTextBox.qml</file>
+        <file>Resources/Qml/ValueEditor/MultiLineTextBox.qml</file>
     </qresource>
 </RCC>

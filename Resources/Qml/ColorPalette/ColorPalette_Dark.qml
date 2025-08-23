@@ -3,12 +3,23 @@ import QtQuick
 pragma Singleton
 
 QtObject {
-    property color background: "#2D2D2D"
-    property color border: "#444444"
-    property color hover: "#336699CC"
-    property color textPrimary: "#FFFFFF"
-    property color gradientStart: Qt.rgba(255, 255, 255, 0)
-    property color gradientEnd: Qt.rgba(255, 255, 255, 1)
-    property color surface: "#3D3D3D"
+    property color labelPrimary : "#FFFFFF"
+    property color textPrimary: "#EEEEEE"
+
+    property color textBoxBackground: "#444444"
+
+    property color rowBackground: "#333333"
+    property color rowBackgroundHover: "#888888"
+    property color rowBorder: "#666666"
+    property color rowIndicator: "#CCCCCC"
+    property color rowSplitter: "#666666"
+    property color rowShadowStart: "#00000000"
+    property color rowShadowEnd: "#66000000"
+
+    property color boxHover: "#A478DB"
+
+    property color comboBoxBackground: "#444444"
+    property color comboBoxItemBackground: "#666666"
+    property color comboBoxItemBackgroundHover: "#888888"
 }
     
