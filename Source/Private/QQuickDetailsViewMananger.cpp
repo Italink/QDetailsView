@@ -46,7 +46,7 @@ QQuickItem* QQuickDetailsViewManager::createValueEditor(QPropertyHandle* inHandl
 		QQuickItem* item = mPropertyValueEditorCreatorMap[inHandle->getType()](inHandle, parent);
 		if (parent) {
 			item->setProperty("anchors.verticalCenter", QVariant::fromValue(parent->property("anchors.verticalCenter")));
-			item->update();
+			//item->update();
 		}
 		return item;
 	}

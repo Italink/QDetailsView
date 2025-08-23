@@ -49,10 +49,10 @@ Item{
                 exitAnimation.start()
                 hoverArea.cursorShape = Qt.ArrowCursor
             }
-            onPressed: mouse.accepted = false
-            onReleased: mouse.accepted = false
-            onClicked: mouse.accepted = false
-            onDoubleClicked: mouse.accepted = false
+            onPressed: (mouse)=> mouse.accepted = false
+            onReleased:(mouse)=>  mouse.accepted = false
+            onClicked:(mouse)=>  mouse.accepted = false
+            onDoubleClicked:(mouse)=>  mouse.accepted = false
         }
         ColorAnimation on border.color{
             id: enterAnimation
