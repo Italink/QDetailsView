@@ -1,5 +1,6 @@
 ﻿import QtQuick;
 import QtQuick.Controls;
+import ColorPalette
 
 Item{
     id: control
@@ -33,16 +34,16 @@ Item{
     Rectangle {
         anchors.fill: parent
         anchors.margins: 2
-        border.color: "transparent"
+        border.color: ColorPalette.theme.textBoxBackground
         border.width: 1
-        color: "#EEEEEE"
+        color: ColorPalette.theme.textBoxBackground
         clip: true
 
         Rectangle{
             visible: isHovered && isLimited
             anchors.fill: parent
             anchors.rightMargin:  parent.width * (max - number) /(max - min)
-            color: "#CE98FB"
+            color: ColorPalette.theme.boxHover
         }
         TextInput{
             id: input
@@ -51,6 +52,7 @@ Item{
             anchors.leftMargin: 5
             anchors.rightMargin: 5
             text: helper.numberToString(number,precision)
+            color: ColorPalette.theme.textPrimary
             verticalAlignment: Text.AlignVCenter
             validator: DoubleValidator{}
             onEditingFinished:{
@@ -141,13 +143,13 @@ Item{
         }
         ColorAnimation on border.color{
             id: enterAnimation
-            to: "#CE98FB"
+            to: ColorPalette.theme.boxHover
             duration: 100
             running: false
         }
         ColorAnimation on border.color{
             id: exitAnimation
-            to: "transparent"
+            to: ColorPalette.theme.textBoxBackground
             duration: 100
             running: false
         }

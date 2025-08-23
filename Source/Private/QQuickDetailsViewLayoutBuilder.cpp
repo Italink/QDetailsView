@@ -15,11 +15,12 @@ QPair<QQuickItem*, QQuickItem*> QQuickDetailsViewHeaderRowBuilder::makeNameValue
 	rootComp.setData(R"(
         import QtQuick;
         import QtQuick.Controls;
+        import ColorPalette
         Rectangle{
             id: topLevelRect  
             anchors.fill: parent
-            color: hoverHandler.hovered ? "#33CE98FB" : "white"
-            border.color: "#EEEEEE"  
+            color: hoverHandler.hovered ? ColorPalette.theme.rowBackgroundHover : ColorPalette.theme.rowBackground
+            border.color: ColorPalette.theme.rowBorder
             border.width: 0.5       
             Behavior on color {
                 ColorAnimation { duration: 100 }
@@ -48,7 +49,7 @@ QPair<QQuickItem*, QQuickItem*> QQuickDetailsViewHeaderRowBuilder::makeNameValue
             }
             Item{
                 id: valueEditorContent
-                height: parent.height
+                implicitHeight: 25
                 anchors.left: splitter.left 
                 anchors.leftMargin: 10
                 anchors.rightMargin: 10
@@ -65,7 +66,7 @@ QPair<QQuickItem*, QQuickItem*> QQuickDetailsViewHeaderRowBuilder::makeNameValue
                     id: visibleSplitter
                     width: 1
                     height: parent.height
-                    color: "#DDDDDD"
+                    color: ColorPalette.theme.rowSplitter
                     anchors.horizontalCenter: parent.horizontalCenter  
                 }
     
@@ -91,8 +92,8 @@ QPair<QQuickItem*, QQuickItem*> QQuickDetailsViewHeaderRowBuilder::makeNameValue
                 height: parent.height
                 gradient: Gradient {
                     orientation: Gradient.Horizontal 
-                    GradientStop { position: 0.0; color: Qt.rgba(0, 0, 0, 0) }  
-                    GradientStop { position: 1.0; color: Qt.rgba(0, 0, 0, 0.2) } 
+                    GradientStop { position: 0.0; color: ColorPalette.theme.rowShadowStart }  
+                    GradientStop { position: 1.0; color: ColorPalette.theme.rowShadowEnd } 
                 }
             }
         }

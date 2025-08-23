@@ -26,7 +26,7 @@ QVariant QQuickTreeViewExPrivate::modelImpl() const
 void QQuickTreeViewExPrivate::setModelImpl(const QVariant& newModel)
 {
     Q_Q(QQuickTreeViewEx);
-
+ 
     if (newModel == m_assignedModel)
         return;
 
@@ -410,6 +410,12 @@ void QQuickTreeViewEx::toggleExpanded(int row)
         collapse(row);
     else
         expand(row);
+}
+
+void QQuickTreeViewEx::invalidateLayout()
+{
+    Q_D(QQuickTreeViewEx);
+    d->forceLayout(false);
 }
 
 QModelIndex QQuickTreeViewEx::modelIndex(const QPoint& cell) const

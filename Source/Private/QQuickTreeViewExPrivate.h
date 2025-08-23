@@ -25,10 +25,10 @@ public:
 
 	virtual void updateRequiredProperties(int serializedModelIndex, QObject* object, bool init);
 	void updateSelection(const QRect& oldSelection, const QRect& newSelection) override;
-
 public:
 	QQmlTreeModelToTableModel m_treeModelToTableModel;
 	QVariant m_assignedModel;
 };
+
 
 #endif // QQuickTreeViewExPrivate_h__

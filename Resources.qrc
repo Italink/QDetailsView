@@ -1,12 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>Resources/Qml/ColorBox.qml</file>
-        <file>Resources/Qml/NumberBox.qml</file>
-        <file>Resources/Qml/TextBox.qml</file>
-        <file>Resources/Qml/TextComboBox.qml</file>
-        <file>Resources/Qml/Vec2Box.qml</file>
-        <file>Resources/Qml/Vec3Box.qml</file>
-        <file>Resources/Qml/Vec4Box.qml</file>
         <file>Resources/Icon/arrow-left-l.png</file>
         <file>Resources/Icon/arrow-right-l.png</file>
         <file>Resources/Icon/close.png</file>
@@ -17,5 +10,15 @@
         <file>Resources/Icon/reset.png</file>
         <file>Resources/Icon/unexpand.png</file>
         <file>Resources/Icon/up.png</file>
+        <file>Resources/Qml/ValueEditor/ColorBox.qml</file>
+        <file>Resources/Qml/ValueEditor/NumberBox.qml</file>
+        <file>Resources/Qml/ValueEditor/TextBox.qml</file>
+        <file>Resources/Qml/ValueEditor/TextComboBox.qml</file>
+        <file>Resources/Qml/ValueEditor/Vec2Box.qml</file>
+        <file>Resources/Qml/ValueEditor/Vec3Box.qml</file>
+        <file>Resources/Qml/ValueEditor/Vec4Box.qml</file>
+        <file>Resources/Qml/ColorPalette/ColorPalette.qml</file>
+        <file>Resources/Qml/ColorPalette/ColorPalette_Dark.qml</file>
+        <file>Resources/Qml/ColorPalette/ColorPalette_Light.qml</file>
     </qresource>
 </RCC>

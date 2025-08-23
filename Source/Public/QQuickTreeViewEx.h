@@ -22,6 +22,7 @@ public:
 	Q_INVOKABLE void expand(int row);
 	Q_INVOKABLE void collapse(int row);
 	Q_INVOKABLE void toggleExpanded(int row);
+	Q_INVOKABLE void invalidateLayout();
 
 	Q_REVISION(6, 4) Q_INVOKABLE void expandRecursively(int row = -1, int depth = -1);
 	Q_REVISION(6, 4) Q_INVOKABLE void collapseRecursively(int row = -1);

@@ -24,6 +24,7 @@ QQuickItem* IPropertyHandleImpl::createNameEditor(QQuickItem* inParent)
 	nameComp.setData(R"(
 		import QtQuick;
 		import QtQuick.Controls;
+		import ColorPalette;
 		Item{
 			implicitHeight: 25
 			width: parent.width
@@ -34,12 +35,13 @@ QQuickItem* IPropertyHandleImpl::createNameEditor(QQuickItem* inParent)
 				clip: true
 				elide: Text.ElideRight
 				text: model.name
-			Component.onCompleted: {
-				console.log("----Component.onCompleted",model.name)
-			}
-			Component.onDestruction: {
-				console.log("----Component.onDestruction",model.name)
-			}
+				color: ColorPalette.theme.labelPrimary
+				Component.onCompleted: {
+					console.log("----Component.onCompleted",model.name)
+				}
+				Component.onDestruction: {
+					console.log("----Component.onDestruction",model.name)
+				}
 			}
 		}
    )", QUrl());

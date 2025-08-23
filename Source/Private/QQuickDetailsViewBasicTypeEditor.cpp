@@ -20,6 +20,7 @@
 		QVariantMap initialProperties; \
 		initialProperties["parent"] = QVariant::fromValue(parent);\
 		auto valueEditor = qobject_cast<QQuickItem*>(nameComp.createWithInitialProperties(initialProperties, context));\
+		qDebug() << nameComp.errorString(); \
 		valueEditor->setParentItem(parent);\
 		TypeName min = handle->getMetaData("Min").toDouble();\
 		TypeName max = handle->getMetaData("Max").toDouble();\

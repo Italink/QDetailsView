@@ -1,10 +1,11 @@
 ﻿import QtQuick;
 import QtQuick.Controls;
+import ColorPalette
 
 Item{
     id: control
     property var value
-    implicitHeight: 25
+    implicitHeight: lineEditor.implicitHeight + 2
     signal asValueChanged(text:var)
     function setValue(newText:var){
         if(newText !== value){
@@ -14,7 +15,8 @@ Item{
     }
     Rectangle {
         anchors.fill: parent
-        border.color: "transparent"
+        border.color: ColorPalette.theme.textBoxBackground
+        color: ColorPalette.theme.textBoxBackground
         border.width: 1
         clip: true
         MouseArea{
@@ -30,14 +32,15 @@ Item{
                 exitAnimation.start()
             }
         }
-        TextInput{
+        TextArea{
             id: lineEditor
             enabled: true
             clip: true
             anchors.fill: parent
-            anchors.leftMargin: 5
-            anchors.rightMargin: 5
+            anchors.leftMargin: 2
+            anchors.rightMargin: 2
             text: control.value
+            color: ColorPalette.theme.textPrimary
             wrapMode: TextInput.WordWrap
             verticalAlignment: Text.AlignVCenter
             onEditingFinished:{
@@ -46,13 +49,13 @@ Item{
         }
         ColorAnimation on border.color{
             id: enterAnimation
-            to: "red"
+            to: ColorPalette.theme.boxHover
             duration: 100
             running: false
         }
         ColorAnimation on border.color{
             id: exitAnimation
-            to: "transparent"
+            to: ColorPalette.theme.textBoxBackground
             duration: 100
             running: false
         }

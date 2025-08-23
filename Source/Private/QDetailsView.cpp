@@ -13,6 +13,21 @@ QDetailsView::QDetailsView(QWidget* parent)
 	setMinimumSize(200, 200);
 	qmlRegisterType<QQuickDetailsView>("QtQuick.DetailsView", 1, 0, "DetailsView");
 
+	qmlRegisterSingletonType(QUrl("qrc:/Resources/Qml/ColorPalette/ColorPalette.qml"),
+		"ColorPalette", 
+		1, 0,               
+		"ColorPalette");     
+
+	qmlRegisterSingletonType(QUrl("qrc:/Resources/Qml/ColorPalette/ColorPalette_Light.qml"),
+		"ColorPalette", 
+		1, 0,              
+		"ColorPalette_Light"); 
+
+	qmlRegisterSingletonType(QUrl("qrc:/Resources/Qml/ColorPalette/ColorPalette_Dark.qml"),
+		"ColorPalette",
+		1, 0,
+		"ColorPalette_Dark");
+
 	mQuickWidget = new QQuickWidget(this);
 	mQuickWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
 

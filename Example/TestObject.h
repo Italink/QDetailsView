@@ -114,7 +114,7 @@ public:
 	QMap<QString, QColor> ColorMap = { {"Red",Qt::red},{"Green",Qt::green},{"Blue",Qt::blue} };
 
 
-	Q_PROPERTY_VAR(TestInlineGadget, InlineGadget);
+	//Q_PROPERTY_VAR(TestInlineGadget, InlineGadget);
 	//Q_PROPERTY_VAR(TestInlineGadget*, InlineGadgetPtr) = new TestInlineGadget;
 	//Q_PROPERTY_VAR(QSharedPointer<TestInlineGadget>, InlineGadgetSPtr) = QSharedPointer<TestInlineGadget>::create();
 	//Q_PROPERTY_VAR(TestInlineObject*, InlineObject) = new TestInlineObject;

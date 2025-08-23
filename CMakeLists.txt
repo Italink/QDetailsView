@@ -37,7 +37,6 @@ foreach(PUBLIC_FILE ${PUBLIC_FILES})
     endif()
 endforeach()
 
-
 if(PROJECT_IS_TOP_LEVEL)
     add_subdirectory(Example)
 endif()
