@@ -19,19 +19,6 @@ Item{
         color: ColorPalette.theme.textBoxBackground
         border.width: 1
         clip: true
-        MouseArea{
-            id: dragArea
-            hoverEnabled: true
-            anchors.fill: parent
-            onEntered:{
-                exitAnimation.stop()
-                enterAnimation.start()
-            }
-            onExited:{
-                enterAnimation.stop()
-                exitAnimation.start()
-            }
-        }
         TextArea{
             id: lineEditor
             enabled: true
@@ -46,6 +33,26 @@ Item{
             onEditingFinished:{
                 setValue(lineEditor.text)
             }
+        }
+        MouseArea{
+            id: hoverArea
+            hoverEnabled: true
+            propagateComposedEvents: true
+            anchors.fill: parent
+            onEntered:{
+                exitAnimation.stop()
+                enterAnimation.start()
+                hoverArea.cursorShape = Qt.IBeamCursor
+            }
+            onExited:{
+                enterAnimation.stop()
+                exitAnimation.start()
+                hoverArea.cursorShape = Qt.ArrowCursor
+            }
+            onPressed: mouse.accepted = false
+            onReleased: mouse.accepted = false
+            onClicked: mouse.accepted = false
+            onDoubleClicked: mouse.accepted = false
         }
         ColorAnimation on border.color{
             id: enterAnimation
