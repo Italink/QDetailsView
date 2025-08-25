@@ -1,9 +1,9 @@
 #include "IPropertyTypeCustomization.h"
 #include "QQuickDetailsViewLayoutBuilder.h"
 
-void IPropertyTypeCustomization::customizeHeader(QPropertyHandle* inPropertyHandle, QQuickDetailsViewHeaderRowBuilder* inBuilder)
+void IPropertyTypeCustomization::customizeHeader(QPropertyHandle* inPropertyHandle, QQuickDetailsViewRowBuilder* inBuilder)
 {
-	inBuilder->makePropertyHeader(inPropertyHandle);
+	inBuilder->makePropertyRow(inPropertyHandle);
 }
 
 void IPropertyTypeCustomization::customizeChildren(QPropertyHandle* inPropertyHandle, QQuickDetailsViewLayoutBuilder* inBuilder)

@@ -19,18 +19,22 @@ Item{
             id: xBox
             width: parent.width/4
             Layout.alignment: Qt.AlignLeft
+            number: value.x
             onNumberChanged: {
-                value.x = number
-                asValueChanged(value)
+                if (control.value) {
+                    control.setValue(Qt.vector2d(number, control.value.y))
+                }
             }
         }
         NumberBox{
             id: yBox
             width: parent.width/4
             Layout.alignment: Qt.AlignLeft
+            number: value.y
             onNumberChanged: {
-                value.y = number
-                asValueChanged(value)
+                if (control.value) {
+                    control.setValue(Qt.vector2d(control.value.x, number))
+                }
             }
         }
         Item {

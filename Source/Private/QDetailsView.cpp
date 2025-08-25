@@ -5,9 +5,9 @@
 #include <QQuickItem>
 #include <QUrl>
 #include <QtQuickControls2/QQuickStyle>
+#include <QDir>
 
-
-QDetailsView::QDetailsView(QWidget* parent) 
+QDetailsView::QDetailsView(QWidget* parent)
 	: QWidget(parent)
 	, mQuickWidget(nullptr)
 	, mQuickDetailsView(nullptr)
@@ -19,14 +19,14 @@ QDetailsView::QDetailsView(QWidget* parent)
 	qmlRegisterType<QQuickDetailsView>("QtQuick.DetailsView", 1, 0, "DetailsView");
 
 	qmlRegisterSingletonType(QUrl("qrc:/Resources/Qml/ColorPalette/ColorPalette.qml"),
-		"ColorPalette", 
-		1, 0,               
-		"ColorPalette");     
+		"ColorPalette",
+		1, 0,
+		"ColorPalette");
 
 	qmlRegisterSingletonType(QUrl("qrc:/Resources/Qml/ColorPalette/ColorPalette_Light.qml"),
-		"ColorPalette", 
-		1, 0,              
-		"ColorPalette_Light"); 
+		"ColorPalette",
+		1, 0,
+		"ColorPalette_Light");
 
 	qmlRegisterSingletonType(QUrl("qrc:/Resources/Qml/ColorPalette/ColorPalette_Dark.qml"),
 		"ColorPalette",
@@ -59,7 +59,9 @@ QDetailsView::QDetailsView(QWidget* parent)
 	QQmlComponent component(mQuickWidget->engine());
 	component.setData(qmlContent.toUtf8(), QUrl(""));
 	QObject* rootObject = component.create();
-	qDebug() << component.errorString();
+	if (!component.errors().isEmpty()) {
+		qDebug() << component.errorString();
+	}
 	if (rootObject) {
 		mQuickWidget->setSource(QUrl());
 		mQuickWidget->engine()->setObjectOwnership(rootObject, QQmlEngine::CppOwnership);

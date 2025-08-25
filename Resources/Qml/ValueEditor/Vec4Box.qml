@@ -19,36 +19,44 @@ Item{
             id: xBox
             width: parent.width/4
             Layout.alignment: Qt.AlignLeft
+            number: value.x
             onNumberChanged: {
-                value.x = number
-                asValueChanged(value)
+                if (control.value) {
+                    control.setValue(Qt.vector4d(number, control.value.y, control.value.z, control.value.w))
+                }
             }
         }
         NumberBox{
             id: yBox
             width: parent.width/4
             Layout.alignment: Qt.AlignLeft
+            number: value.y
             onNumberChanged: {
-                value.y = number
-                asValueChanged(value)
+                if (control.value) {
+                    control.setValue(Qt.vector4d(control.value.x, number, control.value.z, control.value.w))
+                }
             }
         }
         NumberBox{
             id: zBox
             width: parent.width/4
             Layout.alignment: Qt.AlignLeft
+            number: value.z
             onNumberChanged: {
-                value.z = number
-                asValueChanged(value)
+                if (control.value) {
+                    control.setValue(Qt.vector4d(control.value.x, control.value.y, number, control.value.w))
+                }
             }
         }
-        NumberBox{
+            NumberBox{
             id: wBox
             width: parent.width/4
             Layout.alignment: Qt.AlignLeft
+            number: value.w
             onNumberChanged: {
-                value.w = number
-                asValueChanged(value)
+                if (control.value) {
+                    control.setValue(Qt.vector4d(control.value.x, control.value.y, control.value.z, number))
+                }
             }
         }
         Item {

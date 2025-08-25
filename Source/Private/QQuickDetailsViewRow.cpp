@@ -23,12 +23,12 @@ QDetailsViewRow_Property::QDetailsViewRow_Property(QPropertyHandle* inHandle)
 
 void QDetailsViewRow_Property::setupItem(QQuickItem* inParent)
 {
-	QQuickDetailsViewHeaderRowBuilder builder(inParent);
+	QQuickDetailsViewRowBuilder builder(this, inParent);
     if (mPropertyTypeCustomization) {
         mPropertyTypeCustomization->customizeHeader(mHandle, &builder);
         return;
     }
-	builder.makePropertyHeader(mHandle);
+	builder.makePropertyRow(mHandle);
 }
 
 void QDetailsViewRow_Property::attachChildren()
@@ -47,13 +47,16 @@ void QDetailsViewRow_Property::setHandle(QPropertyHandle* inHandle)
 	mPropertyTypeCustomization = QQuickDetailsViewManager::Get()->getCustomPropertyType(inHandle);
 }
 
-QDetailsViewRow_Custom::QDetailsViewRow_Custom(QQuickItem* inItem)
-    : mRowItem(inItem)
+QDetailsViewRow_Custom::QDetailsViewRow_Custom(std::function<void(QQuickDetailsViewRowBuilder*)> inRowCreator)
+	: mRowCreator(inRowCreator)
 {
 
 }
 
 void QDetailsViewRow_Custom::setupItem(QQuickItem* inParent)
 {
-    mRowItem->setParentItem(inParent);
+	if (mRowCreator) {
+		QQuickDetailsViewRowBuilder builder(this, inParent);
+		mRowCreator(&builder);
+	}
 }

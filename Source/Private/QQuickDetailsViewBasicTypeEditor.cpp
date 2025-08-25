@@ -2,6 +2,8 @@
 #include "QPropertyHandle.h"
 #include "QQuickFunctionLibrary.h"
 #include <QRegularExpression>
+#include <QDir>
+#include <QMetaType>
 
 #define REGINTER_NUMBER_EDITOR_CREATOR(TypeName, DefaultPrecision) \
 	registerCustomPropertyValueEditorCreator(QMetaType::fromType<TypeName>(), [](QPropertyHandle* handle, QQuickItem* parent)->QQuickItem* { \
@@ -20,7 +22,9 @@
 		QVariantMap initialProperties; \
 		initialProperties["parent"] = QVariant::fromValue(parent);\
 		auto valueEditor = qobject_cast<QQuickItem*>(nameComp.createWithInitialProperties(initialProperties, context));\
-		qDebug() << nameComp.errorString(); \
+		if (!nameComp.errors().isEmpty()) { \
+			qDebug() << nameComp.errorString(); \
+		} \
 		valueEditor->setParentItem(parent);\
 		TypeName min = handle->getMetaData("Min").toDouble();\
 		TypeName max = handle->getMetaData("Max").toDouble();\
@@ -62,7 +66,9 @@ void QQuickDetailsViewManager::RegisterBasicTypeEditor() {
 		QVariantMap initialProperties;
 		initialProperties["parent"] = QVariant::fromValue(parent);
 		auto valueEditor = qobject_cast<QQuickItem*>(comp.createWithInitialProperties(initialProperties, context));
-		qDebug() << comp.errorString();
+		if (!comp.errors().isEmpty()) {
+			qDebug() << comp.errorString();
+		}
 		valueEditor->setParentItem(parent);
 		valueEditor->setProperty("value", handle->getVar());
 		connect(valueEditor, SIGNAL(asValueChanged(QVariant)), handle, SLOT(setVar(QVariant)));
@@ -87,7 +93,9 @@ void QQuickDetailsViewManager::RegisterBasicTypeEditor() {
 		QVariantMap initialProperties;
 		initialProperties["parent"] = QVariant::fromValue(parent);
 		auto valueEditor = qobject_cast<QQuickItem*>(comp.createWithInitialProperties(initialProperties, context));
-		qDebug() << comp.errorString();
+		if (!comp.errors().isEmpty()) {
+			qDebug() << comp.errorString();
+		}
 		valueEditor->setParentItem(parent);
 		valueEditor->setProperty("value", handle->getVar());
 		connect(valueEditor, SIGNAL(asValueChanged(QVariant)), handle, SLOT(setVar(QVariant)));
@@ -111,7 +119,9 @@ void QQuickDetailsViewManager::RegisterBasicTypeEditor() {
 		QVariantMap initialProperties;
 		initialProperties["parent"] = QVariant::fromValue(parent);
 		auto valueEditor = qobject_cast<QQuickItem*>(comp.createWithInitialProperties(initialProperties, context));
-		qDebug() << comp.errorString();
+		if (!comp.errors().isEmpty()) {
+			qDebug() << comp.errorString();
+		}
 		valueEditor->setParentItem(parent);
 		valueEditor->setProperty("value", handle->getVar());
 		connect(valueEditor, SIGNAL(asValueChanged(QVariant)), handle, SLOT(setVar(QVariant)));
@@ -135,7 +145,9 @@ void QQuickDetailsViewManager::RegisterBasicTypeEditor() {
 		QVariantMap initialProperties;
 		initialProperties["parent"] = QVariant::fromValue(parent);
 		auto valueEditor = qobject_cast<QQuickItem*>(comp.createWithInitialProperties(initialProperties, context));
-		qDebug() << comp.errorString();
+		if (!comp.errors().isEmpty()) {
+			qDebug() << comp.errorString();
+		}
 		valueEditor->setParentItem(parent);
 		valueEditor->setProperty("value", handle->getVar());
 		connect(valueEditor, SIGNAL(asValueChanged(QVariant)), handle, SLOT(setVar(QVariant)));
@@ -159,7 +171,57 @@ void QQuickDetailsViewManager::RegisterBasicTypeEditor() {
 		QVariantMap initialProperties;
 		initialProperties["parent"] = QVariant::fromValue(parent);
 		auto valueEditor = qobject_cast<QQuickItem*>(comp.createWithInitialProperties(initialProperties, context));
-		qDebug() << comp.errorString();
+		if (!comp.errors().isEmpty()) {
+			qDebug() << comp.errorString();
+		}
+		valueEditor->setParentItem(parent);
+		valueEditor->setProperty("value", handle->getVar());
+		connect(valueEditor, SIGNAL(asValueChanged(QVariant)), handle, SLOT(setVar(QVariant)));
+		connect(handle, SIGNAL(asRequestRollback(QVariant)), valueEditor, SLOT(setValue(QVariant)));
+		return valueEditor;
+	});
+
+	QMetaType::registerConverterFunction(
+		[](const void* src, void* target) -> bool {
+			const QDir& dir = *static_cast<const QDir*>(src);
+			QString& str = *static_cast<QString*>(target);
+			str = dir.absolutePath();
+			return true;
+		},
+		QMetaType::fromType<QDir>(),
+		QMetaType::fromType<QString>()
+	);
+
+	QMetaType::registerConverterFunction(
+		[](const void* src, void* target) -> bool {
+			const QString& str = *static_cast<const QString*>(src);
+			QDir& dir = *static_cast<QDir*>(target);
+			dir = QDir(str);
+			return true;
+		},
+		QMetaType::fromType<QString>(),
+		QMetaType::fromType<QDir>()
+	);
+
+	registerCustomPropertyValueEditorCreator(QMetaType::fromType<QDir>(), [](QPropertyHandle* handle, QQuickItem* parent)->QQuickItem* {
+		QQmlEngine* engine = qmlEngine(parent);
+		QQmlContext* context = qmlContext(parent);
+		QQmlComponent comp(engine);
+		comp.setData(R"(
+					import QtQuick;
+					import QtQuick.Controls;
+					import "qrc:/Resources/Qml/ValueEditor"
+					DirectorySelector{
+						 anchors.verticalCenter: parent.verticalCenter
+						 width: parent.width
+					}
+				)", QUrl());
+		QVariantMap initialProperties;
+		initialProperties["parent"] = QVariant::fromValue(parent);
+		auto valueEditor = qobject_cast<QQuickItem*>(comp.createWithInitialProperties(initialProperties, context));
+		if (!comp.errors().isEmpty()) {
+			qDebug() << comp.errorString();
+		}
 		valueEditor->setParentItem(parent);
 		valueEditor->setProperty("value", handle->getVar());
 		connect(valueEditor, SIGNAL(asValueChanged(QVariant)), handle, SLOT(setVar(QVariant)));

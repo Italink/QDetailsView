@@ -6,6 +6,9 @@
 #include <QQuickItem>
 #include "QDetailsViewAPI.h"
 
+class QQuickLambdaHolder;
+class QQuickLambdaHolder_OneParam;
+
 class QDETAILS_VIEW_API QQuickFunctionLibrary : public QObject {
 	Q_OBJECT
 public:
@@ -16,23 +19,46 @@ public:
 	Q_INVOKABLE void setOverrideCursorShape(Qt::CursorShape shape);
 	Q_INVOKABLE void restoreOverrideCursorShape();
 	Q_INVOKABLE void setCursorPosTest(QQuickItem* item, qreal x, qreal y);
+
+
+	static QMetaObject::Connection connect(QObject* sender, const char* signal, QObject* receiver, std::function<void()> callback);
+	static QMetaObject::Connection connect(QObject* sender, const char* signal, QObject* receiver, std::function<void(QVariant)> callback);
+	static QMetaObject::Connection connect(QObject* sender, const char* signal, QObject* receiver, std::function<void(QVariant, QVariant)> callback);
 };
 
-class QDETAILS_VIEW_API QQuickLambdaHelper : public QObject {
+class QDETAILS_VIEW_API QQuickLambdaHolder : public QObject {
 	Q_OBJECT
-		std::function<void()> mCallback;
+	std::function<void()> mCallback;
 public:
-	QQuickLambdaHelper(std::function<void()>&& callback, QObject* parent)
+	QQuickLambdaHolder(std::function<void()> callback, QObject* parent)
 		: QObject(parent)
 		, mCallback(std::move(callback)) {}
 
 	Q_SLOT void call() { mCallback(); }
+};
 
-	static QMetaObject::Connection connect(QObject* sender, const char* signal, std::function<void()>&& callback){
-		if (!sender) 
-			return {};
-		return QObject::connect(sender, signal, new QQuickLambdaHelper(std::move(callback), sender), SLOT(call()));
+class QDETAILS_VIEW_API QQuickLambdaHolder_OneParam : public QObject {
+	Q_OBJECT
+		std::function<void(QVariant)> mCallback;
+public:
+	QQuickLambdaHolder_OneParam(std::function<void(QVariant)> callback, QObject* parent)
+		: QObject(parent)
+		, mCallback(std::move(callback)) {
 	}
+
+	Q_SLOT void call(QVariant inParam0) { mCallback(inParam0); }
+};
+
+class QDETAILS_VIEW_API QQuickLambdaHolder_TwoParams : public QObject {
+	Q_OBJECT
+	std::function<void(QVariant, QVariant)> mCallback;
+public:
+	QQuickLambdaHolder_TwoParams(std::function<void(QVariant, QVariant)> callback, QObject* parent)
+		: QObject(parent)
+		, mCallback(std::move(callback)) {
+	}
+
+	Q_SLOT void call(QVariant inParam0, QVariant inParam1) { mCallback(inParam0, inParam1); }
 };
 
 #endif // QQuickFunctionLibrary_h__

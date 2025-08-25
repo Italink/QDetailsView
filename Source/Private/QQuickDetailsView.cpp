@@ -74,7 +74,7 @@ void QQuickDetailsView::componentComplete()
              required property int hasChildren
              required property int depth
              implicitWidth: detailsView.width
-             implicitHeight: heightProxy.height + 5
+             implicitHeight: heightProxy ? heightProxy.height + 5 : 30
 		     TapHandler {
 				onTapped: detailsView.toggleExpanded(row)
              }

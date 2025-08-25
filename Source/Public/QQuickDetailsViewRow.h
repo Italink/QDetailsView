@@ -37,12 +37,12 @@ protected:
 
 class QDETAILS_VIEW_API QDetailsViewRow_Custom : public IDetailsViewRow {
 public:
-    QDetailsViewRow_Custom(QQuickItem* inItem);
+    QDetailsViewRow_Custom(std::function<void(QQuickDetailsViewRowBuilder*)> inRowCreator);
 protected:
 	QString name() override { return "Custom"; }
 	void setupItem(QQuickItem* inParent) override;
 private:
-    QQuickItem* mRowItem = nullptr;
+    std::function<void(QQuickDetailsViewRowBuilder*)> mRowCreator;
 };
 
 #endif // QQuickDetailsViewRow_h__

@@ -14,6 +14,7 @@ Item{
             asValueChanged(value)
         }
     }
+
     Button{
         anchors.margins:  2
         anchors.fill: parent

@@ -34,7 +34,9 @@ QQuickItem* QPropertyHandleImpl_Enum::createValueEditor(QQuickItem* inParent)
 	QVariantMap initialProperties;
 	initialProperties["parent"] = QVariant::fromValue(inParent);
 	auto valueEditor = qobject_cast<QQuickItem*>(comp.createWithInitialProperties(initialProperties, context));
-	qDebug() << comp.errorString();
+	if (!comp.errors().isEmpty()) {
+		qDebug() << comp.errorString();
+	}
 	valueEditor->setParentItem(inParent);
 	valueEditor->setProperty("value", mHandle->getVar());
 	valueEditor->setProperty("model", mKeys);

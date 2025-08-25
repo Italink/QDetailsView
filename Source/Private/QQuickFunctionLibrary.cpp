@@ -35,3 +35,24 @@ void QQuickFunctionLibrary::setCursorPosTest(QQuickItem* item, qreal x, qreal y)
 	QCursor::setPos(global.x(), global.y());
 	qDebug() << x << y << global << QCursor::pos();
 }
+
+QMetaObject::Connection QQuickFunctionLibrary::connect(QObject* sender, const char* signal, QObject* receiver, std::function<void()> callback)
+{
+	if (!sender)
+		return {};
+	return QObject::connect(sender, signal, new QQuickLambdaHolder(callback, receiver ? receiver : sender), SLOT(call()));
+}
+
+QMetaObject::Connection QQuickFunctionLibrary::connect(QObject* sender, const char* signal, QObject* receiver, std::function<void(QVariant)> callback)
+{
+	if (!sender)
+		return {};
+	return QObject::connect(sender, signal, new QQuickLambdaHolder_OneParam(callback, receiver ? receiver : sender), SLOT(call(QVariant)));
+}
+
+QMetaObject::Connection QQuickFunctionLibrary::connect(QObject* sender, const char* signal, QObject* receiver, std::function<void(QVariant, QVariant)> callback)
+{
+	if (!sender)
+		return {};
+	return QObject::connect(sender, signal, new QQuickLambdaHolder_TwoParams(callback, receiver ? receiver : sender), SLOT(call(QVariant, QVariant)));
+}

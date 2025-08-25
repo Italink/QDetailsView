@@ -5,13 +5,13 @@
 #include "QDetailsViewAPI.h"
 
 class QPropertyHandle;
-class QQuickDetailsViewHeaderRowBuilder;
+class QQuickDetailsViewRowBuilder;
 class QQuickDetailsViewLayoutBuilder;
 
 class QDETAILS_VIEW_API IPropertyTypeCustomization :public  QEnableSharedFromThis<IPropertyTypeCustomization>
 {
 public:
-	virtual void customizeHeader(QPropertyHandle* inPropertyHandle, QQuickDetailsViewHeaderRowBuilder* inBuilder);
+	virtual void customizeHeader(QPropertyHandle* inPropertyHandle, QQuickDetailsViewRowBuilder* inBuilder);
 	virtual void customizeChildren(QPropertyHandle* inPropertyHandle, QQuickDetailsViewLayoutBuilder* inBuilder);
 };
 

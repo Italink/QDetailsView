@@ -19,27 +19,33 @@ Item{
             id: xBox
             width: parent.width/4
             Layout.alignment: Qt.AlignLeft
+            number: value.x
             onNumberChanged: {
-                value.x = number
-                asValueChanged(value)
+                if (control.value) {
+                    control.setValue(Qt.vector3d(number, control.value.y, control.value.z))
+                }
             }
         }
         NumberBox{
             id: yBox
             width: parent.width/4
             Layout.alignment: Qt.AlignLeft
+            number: value.y
             onNumberChanged: {
-                value.y = number
-                asValueChanged(value)
+                if (control.value) {
+                    control.setValue(Qt.vector3d(control.value.x, number, control.value.z))
+                }
             }
         }
         NumberBox{
             id: zBox
             width: parent.width/4
             Layout.alignment: Qt.AlignLeft
+            number: value.z
             onNumberChanged: {
-                value.z = number
-                asValueChanged(value)
+                if (control.value) {
+                    control.setValue(Qt.vector3d(control.value.x, control.value.y, number))
+                }
             }
         }
         Item {

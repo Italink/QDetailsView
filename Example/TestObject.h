@@ -24,8 +24,8 @@ class TestInlineGadget {
 		//Q_META_P_NUMBER_LIMITED(LimitedDouble, 0, 100)
 		//Q_META_END()
 public:
-	TestInlineGadget() { qDebug() << "Create"; }
-	~TestInlineGadget() { qDebug() << "Release"; }
+	TestInlineGadget() { qDebug() << "Create InlineGadge"; }
+	~TestInlineGadget() { qDebug() << "Release InlineGadge"; }
 	Q_PROPERTY_VAR(double, LimitedDouble) = 1;
 	Q_PROPERTY_VAR(QString, Desc) = "This is inline Gadget";
 };
@@ -92,10 +92,10 @@ public:
 	Q_PROPERTY_VAR(double, LimitedDouble) = 5;
 	Q_PROPERTY_VAR(TestEnum, Enum) = TestEnum::One;
 	Q_PROPERTY_VAR(QString, String);
-	Q_PROPERTY_VAR(QDir, Directory);
-	Q_PROPERTY_VAR(QVector2D, Vec2);
-	Q_PROPERTY_VAR(QVector3D, Vec3);
-	Q_PROPERTY_VAR(QVector4D, Vec4);
+	Q_PROPERTY_VAR(QDir, Directory) = QDir("D:/");
+	Q_PROPERTY_VAR(QVector2D, Vec2) = QVector2D(1, 2);
+	Q_PROPERTY_VAR(QVector3D, Vec3) = QVector3D(1, 2, 3);
+	Q_PROPERTY_VAR(QVector4D, Vec4) = QVector4D(1, 2, 3, 4);
 	Q_PROPERTY_VAR(QMatrix4x4, Mat4);
 	Q_PROPERTY_VAR(QColor, Color);
 	Q_PROPERTY_VAR(QList<QColor>, ColorList) = { Qt::red,Qt::green,Qt::blue };

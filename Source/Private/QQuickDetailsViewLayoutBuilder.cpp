@@ -1,12 +1,14 @@
 ﻿#include "QQuickDetailsViewLayoutBuilder.h"
 #include "QQuickDetailsViewMananger.h"
 
-QQuickDetailsViewHeaderRowBuilder::QQuickDetailsViewHeaderRowBuilder(QQuickItem* inRootItem)
-	: mRootItem(inRootItem)
+QQuickDetailsViewRowBuilder::QQuickDetailsViewRowBuilder(IDetailsViewRow* inRow, QQuickItem* inRootItem)
+	: mRow(inRow)
+    , mRootItem(inRootItem)
 {
+    setHeightProxy(nullptr);
 }
 
-QPair<QQuickItem*, QQuickItem*> QQuickDetailsViewHeaderRowBuilder::makeNameValueSlot()
+QPair<QQuickItem*, QQuickItem*> QQuickDetailsViewRowBuilder::makeNameValueSlot()
 {
 	QQmlEngine* engine = qmlEngine(mRootItem);
 	QQmlContext* context = qmlContext(mRootItem);
@@ -107,12 +109,67 @@ QPair<QQuickItem*, QQuickItem*> QQuickDetailsViewHeaderRowBuilder::makeNameValue
         }
     )", QUrl());
     QQuickItem* slotItem = qobject_cast<QQuickItem*>(rootComp.create(newContext));
-    qDebug() << rootComp.errorString();
+	if (!rootComp.errors().isEmpty()) {
+		qDebug() << rootComp.errorString();
+	}
     slotItem->setParentItem(mRootItem);
     return { slotItem->childItems()[1] ,slotItem->childItems()[2] };
 }
 
-void QQuickDetailsViewHeaderRowBuilder::makePropertyHeader(QPropertyHandle* inHandle)
+QQuickItem* QQuickDetailsViewRowBuilder::rootItem()
+{
+    return mRootItem;
+}
+
+QQuickItem* QQuickDetailsViewRowBuilder::setupItem(QQuickItem* inParent, QString inQmlCode)
+{
+	QQmlEngine* engine = qmlEngine(inParent);
+	QQmlContext* context = qmlContext(inParent);
+	QQmlComponent comp(engine);
+	QQmlComponent nameComp(engine);
+	comp.setData(inQmlCode.toLocal8Bit(), QUrl());
+	QVariantMap initialProperties;
+	initialProperties["parent"] = QVariant::fromValue(inParent);
+	auto item = qobject_cast<QQuickItem*>(comp.createWithInitialProperties(initialProperties, context));
+    if (!comp.errors().isEmpty()) {
+        qDebug() << comp.errorString();
+    }
+	item->setParentItem(inParent);
+    return item;
+}
+
+void QQuickDetailsViewRowBuilder::setupLabel(QQuickItem* inParent, QString inText)
+{
+    QQuickItem* lableItem = setupItem(inParent, R"(
+	    import QtQuick;
+	    import QtQuick.Controls;
+	    import ColorPalette;
+	    Item{
+            property string lableText
+		    implicitHeight: 25
+		    width: parent.width
+		    anchors.verticalCenter: parent.verticalCenter
+		    Text {
+			    anchors.fill: parent
+			    verticalAlignment: Text.AlignVCenter
+			    clip: true
+			    elide: Text.ElideRight
+			    text: lableText
+			    color: ColorPalette.theme.labelPrimary
+		    }
+	    }
+    )");
+    lableItem->setProperty("lableText", inText);
+}
+
+void QQuickDetailsViewRowBuilder::setHeightProxy(QQuickItem* inProxyItem)
+{
+	QQmlEngine* engine = qmlEngine(mRootItem);
+	QQmlContext* context = qmlContext(mRootItem);
+    context->parentContext()->setContextProperty("heightProxy", inProxyItem);
+}
+
+void QQuickDetailsViewRowBuilder::makePropertyRow(QPropertyHandle* inHandle)
 {
 	QQmlEngine* engine = qmlEngine(mRootItem);
 	QQmlContext* context = qmlContext(mRootItem);
@@ -123,19 +180,21 @@ void QQuickDetailsViewHeaderRowBuilder::makePropertyHeader(QPropertyHandle* inHa
 }
 
 QQuickDetailsViewLayoutBuilder::QQuickDetailsViewLayoutBuilder(IDetailsViewRow* inRow)
-	: mRow(inRow)
+	: mRootRow(inRow)
 {
 }
 
-QQuickDetailsViewLayoutBuilder* QQuickDetailsViewLayoutBuilder::addCustomRow(QQuickItem* item)
+void QQuickDetailsViewLayoutBuilder::addCustomRow(std::function<void(QQuickDetailsViewRowBuilder*)> creator)
 {
-    return nullptr;
+	QSharedPointer<IDetailsViewRow> child(new QDetailsViewRow_Custom(creator));
+	mRootRow->addChild(child);
+	child->attachChildren();
 }
 
 void QQuickDetailsViewLayoutBuilder::addProperty(QPropertyHandle* inPropertyHandle)
 {
 	QSharedPointer<IDetailsViewRow> child(new QDetailsViewRow_Property(inPropertyHandle));
-	mRow->addChild(child);
+	mRootRow->addChild(child);
 	child->attachChildren();
 }
 
