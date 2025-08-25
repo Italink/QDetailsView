@@ -48,8 +48,9 @@ public:
 
 	QPropertyHandle* findChildHandle(const QString& inSubName);
 	QPropertyHandle* findOrCreateChildHandle(const QString& inSubName);
-	QQuickItem* createNameEditor(QQuickItem* inParent);
-	QQuickItem* createValueEditor(QQuickItem* inParent);
+
+	QQuickItem* setupNameEditor(QQuickItem* inParent);
+	QQuickItem* steupValueEditor(QQuickItem* inParent);
 
 	IPropertyHandleImpl::Type type();
 	QPropertyHandleImpl_Enum* asEnum();

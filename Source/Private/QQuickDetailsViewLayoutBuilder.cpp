@@ -179,8 +179,8 @@ void QQuickDetailsViewRowBuilder::makePropertyRow(QPropertyHandle* inHandle)
 	QQmlEngine* engine = qmlEngine(mRootItem);
 	QQmlContext* context = qmlContext(mRootItem);
     QPair<QQuickItem*, QQuickItem*> slotItem = makeNameValueSlot();
-	QQuickItem* nameEditor = inHandle->createNameEditor(slotItem.first);
-	QQuickItem* valueEditor = inHandle->createValueEditor(slotItem.second);
+	QQuickItem* nameEditor = inHandle->setupNameEditor(slotItem.first);
+	QQuickItem* valueEditor = inHandle->steupValueEditor(slotItem.second);
 	context->parentContext()->setContextProperty("heightProxy", valueEditor ? valueEditor : nameEditor);
 }
 

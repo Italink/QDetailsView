@@ -215,12 +215,12 @@ QPropertyHandle* QPropertyHandle::findOrCreateChildHandle(const QString& inSubNa
 	return mImpl->findOrCreateChildHandle(inSubName);
 }
 
-QQuickItem* QPropertyHandle::createNameEditor(QQuickItem* inParent)
+QQuickItem* QPropertyHandle::setupNameEditor(QQuickItem* inParent)
 {
 	return mImpl->createNameEditor(inParent);
 }
 
-QQuickItem* QPropertyHandle::createValueEditor(QQuickItem* inParent)
+QQuickItem* QPropertyHandle::steupValueEditor(QQuickItem* inParent)
 {
 	return mImpl->createValueEditor(inParent);
 }

@@ -11,7 +11,7 @@
 void PropertyTypeCustomization_CustomType::customizeHeaderRow(QPropertyHandle* inPropertyHandle, QQuickDetailsViewRowBuilder* inBuilder)
 {
 	auto editorSlot = inBuilder->makeNameValueSlot();
-	inPropertyHandle->createNameEditor(editorSlot.first);
+	inPropertyHandle->setupNameEditor(editorSlot.first);
 	auto buttonItem = inBuilder->setupItem(editorSlot.second, R"(
 					import QtQuick;
 					import QtQuick.Controls;
