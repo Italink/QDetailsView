@@ -21,5 +21,7 @@ QtObject {
     property color comboBoxBackground: "#444444"
     property color comboBoxItemBackground: "#666666"
     property color comboBoxItemBackgroundHover: "#888888"
+
+    property color buttonBackground: "#111111"
 }
     
