@@ -17,6 +17,8 @@ public:
 protected:
 	QQuickItem* createValueEditor(QQuickItem* inParent)override;
 	QPropertyHandle* findOrCreateChildHandle(const QString& inSubName) override;
+	Type type() override { return Type::Sequential; };
+
 private:
 	QMetaSequence mMetaSequence;
 };

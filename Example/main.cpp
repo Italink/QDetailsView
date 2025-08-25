@@ -1,15 +1,19 @@
-#include "QApplication"
-#include "TestObject.h"
+#include <QApplication>
 #include "QDetailsView.h"
-#include <QtQuickControls2/QQuickStyle>
+#include "CustomObject.h"
+#include "CustomType.h"
+#include "PropertyTypeCustomization_CustomType.h"
+#include "QQuickDetailsViewMananger.h"
 
 int main(int argc, char** argv) {
 	QApplication app(argc, argv);
-	TestObject obj;
+
+	QCustomObject obj;
+	obj.setSubCustomObject(new QCustomObject);
+
+	QQuickDetailsViewManager::Get()->registerCustomPropertyTypeLayout<QCustomType, PropertyTypeCustomization_CustomType>();
+
 	QDetailsView view;
-	for (int i = 0; i < 1000; i++) {
-		obj.ColorList.push_back(QColor());
-	}
 	view.setObject(&obj);
 	view.show();
 	return app.exec();

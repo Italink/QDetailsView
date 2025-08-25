@@ -4,8 +4,7 @@
 #include <QQmlEngine>
 #include <QQuickItem>
 #include <QUrl>
-#include <QtQuickControls2/QQuickStyle>
-#include <QDir>
+#include "QQuickDetailsViewMananger.h"
 
 QDetailsView::QDetailsView(QWidget* parent)
 	: QWidget(parent)
@@ -14,24 +13,9 @@ QDetailsView::QDetailsView(QWidget* parent)
 {
 	setMinimumSize(200, 200);
 
-	QQuickStyle::setStyle("Basic");
-
-	qmlRegisterType<QQuickDetailsView>("QtQuick.DetailsView", 1, 0, "DetailsView");
-
-	qmlRegisterSingletonType(QUrl("qrc:/Resources/Qml/ColorPalette/ColorPalette.qml"),
-		"ColorPalette",
-		1, 0,
-		"ColorPalette");
-
-	qmlRegisterSingletonType(QUrl("qrc:/Resources/Qml/ColorPalette/ColorPalette_Light.qml"),
-		"ColorPalette",
-		1, 0,
-		"ColorPalette_Light");
-
-	qmlRegisterSingletonType(QUrl("qrc:/Resources/Qml/ColorPalette/ColorPalette_Dark.qml"),
-		"ColorPalette",
-		1, 0,
-		"ColorPalette_Dark");
+	if (!QQuickDetailsViewManager::Get()->isInitialized()) {
+		QQuickDetailsViewManager::Get()->initialize();
+	}
 
 	mQuickWidget = new QQuickWidget(this);
 	mQuickWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);

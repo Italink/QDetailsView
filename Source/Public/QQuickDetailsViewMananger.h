@@ -19,6 +19,8 @@ public:
 
 	static QQuickDetailsViewManager* Get();
 
+	void initialize();
+	bool isInitialized() const;
 	void registerQml();
 
 	template<typename IPropertyTypeCustomizationType>
@@ -47,6 +49,8 @@ protected:
 	QQuickDetailsViewManager();
 	void RegisterBasicTypeEditor();
 private:
+	bool mInitialized = false;
+
 	QHash<const QMetaObject*, CustomPropertyTypeLayoutCreator> mCustomClassTypeLayoutMap;
 	QHash<QMetaType, CustomPropertyTypeLayoutCreator> mCustomPropertyTypeLayoutMap;
 	QHash<QMetaType, CustomPropertyValueWidgetCreator> mPropertyValueEditorCreatorMap;

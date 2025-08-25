@@ -7,8 +7,11 @@ class QDETAILS_VIEW_API QQuickDetailsViewRowBuilder {
 public:
 	QQuickDetailsViewRowBuilder(IDetailsViewRow* inRow, QQuickItem* inRootItem);
 	QPair<QQuickItem*, QQuickItem*> makeNameValueSlot();
+
+	IDetailsViewRow* row() const;
+	QQuickItem* rootItem() const;
+
 	void makePropertyRow(QPropertyHandle* inHandle);
-	QQuickItem* rootItem();
 	QQuickItem* setupItem(QQuickItem* inParent, QString inQmlCode);
 	void setupLabel(QQuickItem* inParent, QString inText);
 	void setHeightProxy(QQuickItem* inProxyItem);
@@ -20,6 +23,9 @@ private:
 class  QDETAILS_VIEW_API QQuickDetailsViewLayoutBuilder {
 public:
 	QQuickDetailsViewLayoutBuilder(IDetailsViewRow* inRootRow);
+
+	IDetailsViewRow* row() const;
+
 	void addCustomRow(std::function<void(QQuickDetailsViewRowBuilder*)> inCustomRowCreator);
 	void addProperty(QPropertyHandle* inPropertyHandle);
 	void addObject(QObject* inObject);

@@ -8,6 +8,7 @@ public:
 	QPropertyHandleImpl_RawType(QPropertyHandle* inHandle);
 protected:
 	QQuickItem* createValueEditor(QQuickItem* inParent) override;
+	Type type() override { return Type::RawType; };
 };
 
 #endif // QPropertyHandleImpl_RawType_h__

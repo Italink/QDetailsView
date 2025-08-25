@@ -1,6 +1,10 @@
+
+file(GLOB_RECURSE PROJECT_SOURCE FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.h  ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp )
+
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${PROJECT_SOURCE})
+
 add_executable(QDetailsViewExample
-    main.cpp
-    TestObject.h
+    ${PROJECT_SOURCE}
 )
 
 set_property(TARGET QDetailsViewExample PROPERTY AUTOMOC ON)

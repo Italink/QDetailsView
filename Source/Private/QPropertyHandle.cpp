@@ -167,6 +167,11 @@ QString QPropertyHandle::createSubPath(const QString& inSubName)
 	return getPropertyPath() + "." + inSubName;
 }
 
+void QPropertyHandle::invalidateStructure()
+{
+	Q_EMIT asStructureChanged();
+}
+
 QVariant QPropertyHandle::getVar()
 {
 	return mGetter();
@@ -218,6 +223,11 @@ QQuickItem* QPropertyHandle::createNameEditor(QQuickItem* inParent)
 QQuickItem* QPropertyHandle::createValueEditor(QQuickItem* inParent)
 {
 	return mImpl->createValueEditor(inParent);
+}
+
+IPropertyHandleImpl::Type QPropertyHandle::type()
+{
+	return mImpl->type();
 }
 
 QPropertyHandleImpl_Enum* QPropertyHandle::asEnum()

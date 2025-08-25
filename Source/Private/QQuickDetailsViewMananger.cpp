@@ -7,12 +7,46 @@
 #include "Customization/PropertyTypeCustomization_Associative.h"
 #include "Customization/PropertyTypeCustomization_ObjectDefault.h"
 #include "Customization/PropertyTypeCustomization_Matrix4x4.h"
+#include <QtQuickControls2/QQuickStyle>
 #include <QMatrix4x4>
 
 QQuickDetailsViewManager* QQuickDetailsViewManager::Get()
 {
 	static QQuickDetailsViewManager ins;
 	return &ins;
+}
+
+void QQuickDetailsViewManager::initialize()
+{
+	mInitialized = true;
+
+#ifdef QDETAILS_VIEW_STATIC_LIBRARY
+	Q_INIT_RESOURCE(Resources);
+#endif
+
+	QQuickStyle::setStyle("Basic");
+
+	qmlRegisterType<QQuickDetailsView>("QtQuick.DetailsView", 1, 0, "DetailsView");
+
+	qmlRegisterSingletonType(QUrl("qrc:/Resources/Qml/ColorPalette/ColorPalette.qml"),
+		"ColorPalette",
+		1, 0,
+		"ColorPalette");
+
+	qmlRegisterSingletonType(QUrl("qrc:/Resources/Qml/ColorPalette/ColorPalette_Light.qml"),
+		"ColorPalette",
+		1, 0,
+		"ColorPalette_Light");
+
+	qmlRegisterSingletonType(QUrl("qrc:/Resources/Qml/ColorPalette/ColorPalette_Dark.qml"),
+		"ColorPalette",
+		1, 0,
+		"ColorPalette_Dark");
+}
+
+bool QQuickDetailsViewManager::isInitialized() const
+{
+	return mInitialized;
 }
 
 void QQuickDetailsViewManager::registerQml()

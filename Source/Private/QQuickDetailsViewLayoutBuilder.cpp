@@ -98,7 +98,7 @@ QPair<QQuickItem*, QQuickItem*> QQuickDetailsViewRowBuilder::makeNameValueSlot()
                 id: gradientBox
                 visible: detailsDelegate.depth > 0  
                 width: 5
-                x: padding + (detailsDelegate.depth * detailsDelegate.indent)
+                x: padding + (detailsDelegate.depth * detailsDelegate.indent) - 10
                 height: parent.height
                 gradient: Gradient {
                     orientation: Gradient.Horizontal 
@@ -116,9 +116,14 @@ QPair<QQuickItem*, QQuickItem*> QQuickDetailsViewRowBuilder::makeNameValueSlot()
     return { slotItem->childItems()[1] ,slotItem->childItems()[2] };
 }
 
-QQuickItem* QQuickDetailsViewRowBuilder::rootItem()
+QQuickItem* QQuickDetailsViewRowBuilder::rootItem() const
 {
     return mRootItem;
+}
+
+IDetailsViewRow* QQuickDetailsViewRowBuilder::row() const
+{
+    return mRow;
 }
 
 QQuickItem* QQuickDetailsViewRowBuilder::setupItem(QQuickItem* inParent, QString inQmlCode)
@@ -182,6 +187,11 @@ void QQuickDetailsViewRowBuilder::makePropertyRow(QPropertyHandle* inHandle)
 QQuickDetailsViewLayoutBuilder::QQuickDetailsViewLayoutBuilder(IDetailsViewRow* inRow)
 	: mRootRow(inRow)
 {
+}
+
+IDetailsViewRow* QQuickDetailsViewLayoutBuilder::row() const
+{
+    return mRootRow;
 }
 
 void QQuickDetailsViewLayoutBuilder::addCustomRow(std::function<void(QQuickDetailsViewRowBuilder*)> creator)

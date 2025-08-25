@@ -11,9 +11,12 @@ public:
 	void appendItem(QString inKey, QVariant inValue);
 	bool renameItem(QString inSrc, QString inDst);
 	void removeItem(QString inKey);
+
 protected:
 	QQuickItem* createValueEditor(QQuickItem* inParent)override;
 	QPropertyHandle* findOrCreateChildHandle(const QString& inSubName) override;
+	Type type() override { return Type::Associative; };
+
 private:
 	QMetaAssociation mMetaAssociation;
 };

@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.12)
 
 project(QDetailsView CXX)
 
+option(BUILD_SHARED_LIBS "Build shared library (ON) or static library (OFF)" OFF)
+
 find_package(Qt6 COMPONENTS Core Widgets Gui QuickWidgets QuickTemplates2 QuickControls2 REQUIRED)
 
 qt6_add_resources(QRC_FILE Resources.qrc)
@@ -10,7 +12,14 @@ file(GLOB_RECURSE PROJECT_SOURCE FILES ${CMAKE_CURRENT_SOURCE_DIR}/Source/*.h  $
 
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${PROJECT_SOURCE})
 
-add_library(QDetailsView SHARED ${PROJECT_SOURCE} ${QRC_FILE})
+if(BUILD_SHARED_LIBS)
+	add_library(QDetailsView SHARED ${PROJECT_SOURCE} ${QRC_FILE})
+	target_compile_definitions(QDetailsView PRIVATE QDETAILS_VIEW_SHARED_LIBRARY)
+else()
+	add_library(QDetailsView STATIC ${PROJECT_SOURCE} ${QRC_FILE})
+	target_compile_definitions(QDetailsView PUBLIC QDETAILS_VIEW_STATIC_LIBRARY) 
+endif()
+
 
 set_property(TARGET QDetailsView PROPERTY AUTOMOC ON)
 set_property(TARGET QDetailsView PROPERTY USE_FOLDERS ON)

@@ -18,7 +18,6 @@ void QQuickDetailsViewPrivate::initItemCallback(int serializedModelIndex, QObjec
 	node->setupItem(item);
 }
 
-
 QQuickDetailsView::QQuickDetailsView(QQuickItem* parent /*= nullptr*/)
     : QQuickTreeViewEx(*(new QQuickDetailsViewPrivate()),parent)
 {

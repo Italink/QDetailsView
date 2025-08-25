@@ -37,6 +37,8 @@ public:
 	QString getPropertyPath();
 	QString createSubPath(const QString& inSubName);
 
+	void invalidateStructure();
+
 	Q_INVOKABLE QVariant getVar();
 	Q_INVOKABLE void setVar(QVariant var);
 
@@ -49,6 +51,7 @@ public:
 	QQuickItem* createNameEditor(QQuickItem* inParent);
 	QQuickItem* createValueEditor(QQuickItem* inParent);
 
+	IPropertyHandleImpl::Type type();
 	QPropertyHandleImpl_Enum* asEnum();
 	QPropertyHandleImpl_Object* asObject();
 	QPropertyHandleImpl_Associative* asAssociative();
@@ -58,6 +61,7 @@ public:
 	static QVariant createNewVariant(QMetaType inOutputType);
 Q_SIGNALS:
 	void asVarChanged(QVariant);
+	void asStructureChanged();
 	void asRequestRollback(QVariant);
 protected:
 	QPropertyHandle(QObject* inParent, QMetaType inType, QString inPropertyPath, Getter inGetter, Setter inSetter);

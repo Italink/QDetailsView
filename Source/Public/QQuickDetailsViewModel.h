@@ -27,7 +27,8 @@ public:
     QHash<int, QByteArray> roleNames() const override;
     void setObject(QObject* inObject);
     QObject* getObject() const;
-    void rebuildNode();
+	void beginReset();
+	void endReset();
 private:
     QSharedPointer<QDetailsViewRow_Property> mRoot;
     QObject* mObject;

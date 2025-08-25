@@ -17,8 +17,12 @@ public:
     virtual void setupItem(QQuickItem* inParent){}
     virtual void attachChildren() {}
     virtual void addChild(QSharedPointer<IDetailsViewRow> inChild);
+    ~IDetailsViewRow() {};
     void clear();
+    QQuickDetailsViewModel* model();
+    void invalidateChildren();
 protected:
+    QQuickDetailsViewModel* mModel = nullptr;
     IDetailsViewRow* mParent = nullptr;
     QList<QSharedPointer<IDetailsViewRow>> mChildren;
 };
@@ -26,12 +30,14 @@ protected:
 class QDETAILS_VIEW_API QDetailsViewRow_Property : public IDetailsViewRow {
 public:
     QDetailsViewRow_Property(QPropertyHandle* inHandle);
+    ~QDetailsViewRow_Property();
     void setHandle(QPropertyHandle* inHandle);
     QString name() override { return mHandle->getName(); }
     void setupItem(QQuickItem* inParent) override;
     void attachChildren() override;
 protected:
     QPropertyHandle* mHandle = nullptr;
+    QMetaObject::Connection mStructureChangedConnection;
     QSharedPointer<IPropertyTypeCustomization> mPropertyTypeCustomization;
 };
 

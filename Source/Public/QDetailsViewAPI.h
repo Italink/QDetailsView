@@ -3,10 +3,19 @@
 
 #include <QtCore/qglobal.h>
 
-#if defined(QDETAILS_VIEW_LIBRARY)
-#  define QDETAILS_VIEW_API Q_DECL_EXPORT
+#ifdef _WIN32
+#	ifdef QDETAILS_VIEW_STATIC_LIBRARY
+#		define QDETAILS_VIEW_API 
+#	else
+#		ifdef QDETAILS_VIEW_SHARED_LIBRARY
+#			define QDETAILS_VIEW_API __declspec(dllexport)
+#		else
+#			define QDETAILS_VIEW_API __declspec(dllimport)
+#		endif
+#	endif
 #else
-#  define QDETAILS_VIEW_API Q_DECL_IMPORT
+#	define QDETAILS_VIEW_API __attribute__((visibility("default")))
 #endif
+
 
 #endif // QDETAILS_VIEW_API_H
