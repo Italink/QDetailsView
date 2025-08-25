@@ -42,7 +42,7 @@ public:
 	Q_PROPERTY_VAR(QCutsomGadget, CustomGadget);
 	Q_PROPERTY_VAR(QCutsomGadget*, CustomGadgetPtr) = new QCutsomGadget;
 	Q_PROPERTY_VAR(QSharedPointer<QCutsomGadget>, CustomGadgetSharedPtr) = QSharedPointer<QCutsomGadget>::create();
-	Q_PROPERTY_VAR(QCustomObject*, SubCustomObject) = nullptr;
+	//Q_PROPERTY_VAR(QCustomObject*, SubCustomObject) = nullptr;
 };
 
 #endif // CustomObject_h__

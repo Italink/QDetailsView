@@ -79,7 +79,7 @@ int QQuickDetailsViewModel::rowCount(const QModelIndex& parent) const {
 void QQuickDetailsViewModel::setObject(QObject* inObject)
 {
     mObject = inObject;
-    mRoot->setHandle(QPropertyHandle::FindOrCreate(mObject, ""));
+    mRoot->setHandle(QPropertyHandle::FindOrCreate(mObject));
     mRoot->invalidateChildren();
 }
 

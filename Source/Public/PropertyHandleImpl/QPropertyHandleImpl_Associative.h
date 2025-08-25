@@ -8,14 +8,15 @@ class QDETAILS_VIEW_API QPropertyHandleImpl_Associative: public IPropertyHandleI
 public:
 	QPropertyHandleImpl_Associative(QPropertyHandle* inHandle);
 
+	const QMetaAssociation& metaAssociation() const;
+
 	void appendItem(QString inKey, QVariant inValue);
 	bool renameItem(QString inSrc, QString inDst);
 	void removeItem(QString inKey);
 
 protected:
-	QQuickItem* createValueEditor(QQuickItem* inParent)override;
-	QPropertyHandle* findOrCreateChildHandle(const QString& inSubName) override;
 	Type type() override { return Type::Associative; };
+	QQuickItem* createValueEditor(QQuickItem* inParent)override;
 
 private:
 	QMetaAssociation mMetaAssociation;

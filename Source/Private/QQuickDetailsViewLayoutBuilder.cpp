@@ -210,13 +210,5 @@ void QQuickDetailsViewLayoutBuilder::addProperty(QPropertyHandle* inPropertyHand
 
 void QQuickDetailsViewLayoutBuilder::addObject(QObject* inObject)
 {
-	for (int i = 1; i < inObject->metaObject()->propertyCount(); i++) {
-		QMetaProperty prop = inObject->metaObject()->property(i);
-		QString propertyPath = prop.name();
-		QPropertyHandle* handler = QPropertyHandle::FindOrCreate(inObject, propertyPath);
-		if (handler)
-			addProperty(handler);
-		else
-			qWarning() << "property handle is null";
-	}
+    addProperty(QPropertyHandle::FindOrCreate(inObject));
 }

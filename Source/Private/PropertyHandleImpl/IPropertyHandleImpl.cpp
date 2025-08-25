@@ -6,16 +6,6 @@ IPropertyHandleImpl::IPropertyHandleImpl(QPropertyHandle* inHandle):
 {
 }
 
-QPropertyHandle* IPropertyHandleImpl::findChildHandle(const QString& inSubName)
-{
-	return QPropertyHandle::Find(mHandle->parent(), mHandle->createSubPath(inSubName));
-}
-
-QPropertyHandle* IPropertyHandleImpl::findOrCreateChildHandle(const QString& inSubName)
-{
-	return nullptr;
-}
-
 QQuickItem* IPropertyHandleImpl::createNameEditor(QQuickItem* inParent)
 {
 	QQmlEngine* engine = qmlEngine(inParent);
@@ -48,3 +38,4 @@ QQuickItem* IPropertyHandleImpl::createNameEditor(QQuickItem* inParent)
 	nameEditor->setParentItem(inParent);
 	return nameEditor;
 }
+

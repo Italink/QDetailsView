@@ -22,8 +22,6 @@ public:
 	};
 protected:
 	IPropertyHandleImpl(QPropertyHandle* inHandle);
-	virtual QPropertyHandle* findChildHandle(const QString& inSubName);
-	virtual QPropertyHandle* findOrCreateChildHandle(const QString& inSubName);
 	virtual QQuickItem* createNameEditor(QQuickItem* inParent);
 	virtual QQuickItem* createValueEditor(QQuickItem* inParent)= 0;
 	virtual Type type() { return Type::Null; };

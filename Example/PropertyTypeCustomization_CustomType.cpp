@@ -29,15 +29,16 @@ void PropertyTypeCustomization_CustomType::customizeHeaderRow(QPropertyHandle* i
 		QCustomType customType = inPropertyHandle->getVar().value<QCustomType>();
 		std::sort(customType.Array.begin(), customType.Array.end());
 		inPropertyHandle->setVar(QVariant::fromValue(customType));
+		if (auto arrayHandle = inPropertyHandle->findChild("Array")) {
+		}
 	});
 }
 
 void PropertyTypeCustomization_CustomType::customizeChildren(QPropertyHandle* inPropertyHandle, QQuickDetailsViewLayoutBuilder* inBuilder)
 {
-	auto arrayHandle = QPropertyHandle::FindOrCreate(
-		inPropertyHandle->parent(),
+	auto arrayHandle = inPropertyHandle->findOrCreateChild(
 		QMetaType::fromType<QVector<int>>(),
-		inPropertyHandle->createSubPath("Array"),
+		"Array",
 		[inPropertyHandle]() {
 			return QVariant::fromValue(inPropertyHandle->getVar().value<QCustomType>().Array);
 		},
@@ -48,10 +49,9 @@ void PropertyTypeCustomization_CustomType::customizeChildren(QPropertyHandle* in
 		}
 	);
 
-	auto arraySizeHandle = QPropertyHandle::FindOrCreate(
-		inPropertyHandle->parent(),
+	auto arraySizeHandle = inPropertyHandle->findOrCreateChild(
 		QMetaType::fromType<unsigned int>(),
-		inPropertyHandle->createSubPath("ArraySize"),
+		"ArraySize",
 		[inPropertyHandle]() {
 			return inPropertyHandle->getVar().value<QCustomType>().ArraySize;
 		},

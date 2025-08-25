@@ -74,55 +74,6 @@ QPropertyHandle* QPropertyHandle::Find(const QObject* inParent, const QString& i
 	return nullptr;
 }
 
-QPropertyHandle* QPropertyHandle::FindOrCreate(QObject* inObject, const QString& inPropertyPath)
-{
-	QPropertyHandle* handle = Find(inObject, inPropertyPath);
-	if (handle)
-		return handle;
-	if (inPropertyPath.isEmpty()) {
-		return new QPropertyHandle(
-			inObject,
-			inObject->metaObject()->metaType(),
-			inPropertyPath,
-			[inObject]() {return QVariant::fromValue(inObject); },
-			[inObject](QVariant var) {}
-		);
-	}
-
-	QStringList pathList = inPropertyPath.split(".");
-	int currIndex = 0;
-	QString toplevelProp = pathList[currIndex++].toLocal8Bit();
-	handle = Find(inObject, toplevelProp);
-	if (!handle) {
-		int index = inObject->metaObject()->indexOfProperty(toplevelProp.toLocal8Bit());
-		if (index < 0)
-			return nullptr;
-		QMetaProperty metaProperty = inObject->metaObject()->property(index);
-		QMetaType metaType = metaProperty.metaType();
-		handle = new QPropertyHandle(
-			inObject,
-			metaProperty.metaType(),
-			inPropertyPath,
-			[inObject, metaProperty]() {return metaProperty.read(inObject); },
-			[inObject, metaProperty](QVariant var) {  metaProperty.write(inObject, var); }
-		);
-	}
-	while (currIndex < pathList.size()) {
-		const QString& currPropName = pathList[currIndex++];
-		QPropertyHandle* childHandle = handle->findChildHandle(currPropName);
-		if (!childHandle) {
-			childHandle = handle->findOrCreateChildHandle(currPropName);
-		}
-		if (childHandle) {
-			handle = childHandle;
-		}
-		else {
-			return nullptr;
-		}
-	}
-	return handle;
-}
-
 QPropertyHandle* QPropertyHandle::FindOrCreate(QObject* inParent, QMetaType inType, QString inPropertyPath, Getter inGetter, Setter inSetter)
 {
 	QPropertyHandle* handle = Find(inParent, inPropertyPath);
@@ -134,6 +85,20 @@ QPropertyHandle* QPropertyHandle::FindOrCreate(QObject* inParent, QMetaType inTy
 		inPropertyPath,
 		inGetter,
 		inSetter
+	);
+}
+
+QPropertyHandle* QPropertyHandle::FindOrCreate(QObject* inObject)
+{
+	QPropertyHandle* handle = Find(inObject, "");
+	if (handle)
+		return handle;
+	return new QPropertyHandle(
+		inObject,
+		inObject->metaObject()->metaType(),
+		"",
+		[inObject]() {return QVariant::fromValue(inObject); },
+		[inObject](QVariant var) {}
 	);
 }
 
@@ -205,14 +170,30 @@ const QVariantHash& QPropertyHandle::getMetaDataMap() const
 	return mMetaData;
 }
 
-QPropertyHandle* QPropertyHandle::findChildHandle(const QString& inSubName)
+QPropertyHandle* QPropertyHandle::findChild(QString inPropertyName)
 {
-	return mImpl->findChildHandle(inSubName);
+	return Find(this->parent(), this->createSubPath(inPropertyName));
 }
 
-QPropertyHandle* QPropertyHandle::findOrCreateChildHandle(const QString& inSubName)
+QPropertyHandle* QPropertyHandle::findOrCreateChild(QMetaType inType, QString inPropertyName, Getter inGetter, Setter inSetter)
 {
-	return mImpl->findOrCreateChildHandle(inSubName);
+	QPropertyHandle* childHandle = QPropertyHandle::FindOrCreate(
+		this->parent(),
+		inType,
+		this->createSubPath(inPropertyName),
+		inGetter,
+		inSetter
+	);
+	childHandle->disconnect(this);
+	connect(this, &QPropertyHandle::asVarChanged, childHandle, [childHandle](QVariant) {
+		QVariant var = childHandle->getVar();
+		Q_EMIT childHandle->asRequestRollback(var);
+	});
+	connect(this, &QPropertyHandle::asRequestRollback, childHandle, [childHandle](QVariant) {
+		QVariant var = childHandle->getVar();
+		Q_EMIT childHandle->asRequestRollback(var);
+		});
+	return childHandle;
 }
 
 QQuickItem* QPropertyHandle::setupNameEditor(QQuickItem* inParent)

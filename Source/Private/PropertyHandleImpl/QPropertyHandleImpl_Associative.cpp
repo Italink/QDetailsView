@@ -10,33 +10,14 @@ QPropertyHandleImpl_Associative::QPropertyHandleImpl_Associative(QPropertyHandle
 	mMetaAssociation = iterable.metaContainer();
 }
 
+const QMetaAssociation& QPropertyHandleImpl_Associative::metaAssociation() const
+{
+	return mMetaAssociation;
+}
+
 QQuickItem* QPropertyHandleImpl_Associative::createValueEditor(QQuickItem* inParent)
 {
 	return nullptr;
-}
-
-QPropertyHandle* QPropertyHandleImpl_Associative::findOrCreateChildHandle(const QString& inKey) {
-	QPropertyHandle* handle = QPropertyHandle::FindOrCreate(
-		mHandle->parent(),
-		mMetaAssociation.mappedMetaType(),
-		mHandle->createSubPath(inKey),
-		[this, inKey]() {
-			QVariant varMap = mHandle->getVar();
-			QAssociativeIterable iterable = varMap.value<QAssociativeIterable>();
-			return iterable.value(inKey);
-		},
-		[this, inKey](QVariant var) {
-			QVariant varMap = mHandle->getVar();
-			QAssociativeIterable iterable = varMap.value<QAssociativeIterable>();
-			QtPrivate::QVariantTypeCoercer keyCoercer;
-			QtPrivate::QVariantTypeCoercer mappedCoercer;
-			void* containterPtr = const_cast<void*>(iterable.constIterable());
-			const void* dataPtr = mappedCoercer.coerce(var, var.metaType());
-			mMetaAssociation.setMappedAtKey(containterPtr, keyCoercer.coerce(inKey, mMetaAssociation.keyMetaType()), dataPtr);
-			mHandle->setVar(varMap);
-		}
-	);
-	return handle;
 }
 
 bool QPropertyHandleImpl_Associative::renameItem(QString inSrc, QString inDst) {

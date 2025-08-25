@@ -22,7 +22,6 @@ private:
 QQuickDetailsViewPrivate::QQuickDetailsViewPrivate()
 	:mModel(new QQuickDetailsViewModel)
 {
-
 }
 
 void QQuickDetailsViewPrivate::updateRequiredProperties(int serializedModelIndex, QObject* object, bool init)

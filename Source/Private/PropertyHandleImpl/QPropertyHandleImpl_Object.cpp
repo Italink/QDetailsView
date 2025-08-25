@@ -86,55 +86,13 @@ void QPropertyHandleImpl_Object::refreshObjectPtr() {
 	}
 }
 
-QPropertyHandle* QPropertyHandleImpl_Object::findChildHandle(const QString& inSubName) {
-	return QPropertyHandle::Find(mHandle->parent(), inSubName);
+QVariant& QPropertyHandleImpl_Object::getObjectHolder()
+{
+	return mObjectHolder;
 }
 
 QQuickItem* QPropertyHandleImpl_Object::createValueEditor(QQuickItem* inParent)
 {
 	return nullptr;
-}
-
-QPropertyHandle* QPropertyHandleImpl_Object::findOrCreateChildHandle(const QString& inSubName) {
-	QPropertyHandle* handle = nullptr;
-	if (mObjectPtr == nullptr)
-		return handle;
-	QString propertyPath = mMetaObject->inherits(&QObject::staticMetaObject) ? inSubName : mHandle->createSubPath(inSubName);
-	for(int i = 0;i< mMetaObject->propertyCount();i++){
-		QMetaProperty prop = mMetaObject->property(i);
-		if(prop.name() == inSubName){
-			if(mObjectPtr == mOwnerObject){
-				handle = QPropertyHandle::FindOrCreate(
-					mOwnerObject,
-					prop.metaType(),
-					propertyPath,
-					[this, prop]() {
-						return prop.read(mOwnerObject);
-					},
-					[this, prop](QVariant var) {
-						prop.write(mOwnerObject, var);
-					}
-				);
-			}
-			else{
-				handle = QPropertyHandle::FindOrCreate(
-					mOwnerObject,
-					prop.metaType(),
-					propertyPath,
-					[this, prop]() {
-						return prop.readOnGadget(mObjectPtr);
-					},
-					[this, prop](QVariant var) {
-						prop.writeOnGadget(mObjectPtr, var);
-						mHandle->setVar(mObjectHolder);
-						refreshObjectPtr();
-					}
-					);
-			}
-			break;
-
-		}
-	}
-	return handle;
 }
 

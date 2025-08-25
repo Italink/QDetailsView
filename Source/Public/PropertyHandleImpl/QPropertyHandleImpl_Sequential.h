@@ -9,6 +9,7 @@ class QDETAILS_VIEW_API QPropertyHandleImpl_Sequential: public IPropertyHandleIm
 public:
 	QPropertyHandleImpl_Sequential(QPropertyHandle* inHandle);
 
+	const QMetaSequence& metaSequence() const;
 	int itemCount();
 	void appendItem(QVariant InVar);
 	void moveItem(int InSrcIndex, int InDstIndex);
@@ -16,7 +17,6 @@ public:
 
 protected:
 	QQuickItem* createValueEditor(QQuickItem* inParent)override;
-	QPropertyHandle* findOrCreateChildHandle(const QString& inSubName) override;
 	Type type() override { return Type::Sequential; };
 
 private:

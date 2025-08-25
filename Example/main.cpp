@@ -9,7 +9,7 @@ int main(int argc, char** argv) {
 	QApplication app(argc, argv);
 
 	QCustomObject obj;
-	obj.setSubCustomObject(new QCustomObject);
+	//obj.setSubCustomObject(new QCustomObject);
 
 	QQuickDetailsViewManager::Get()->registerCustomPropertyTypeLayout<QCustomType, PropertyTypeCustomization_CustomType>();
 

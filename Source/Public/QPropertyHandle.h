@@ -27,8 +27,8 @@ public:
 	};
 
 	static QPropertyHandle* Find(const QObject* inParent, const QString& inPropertyPath);
-	static QPropertyHandle* FindOrCreate(QObject* inObject, const QString& inPropertyPath);
 	static QPropertyHandle* FindOrCreate(QObject* inParent, QMetaType inType, QString inPropertyPath, Getter inGetter, Setter inSetter);
+	static QPropertyHandle* FindOrCreate(QObject* inObject);
 	static QPropertyHandle* Create(QObject* inParent, QMetaType inType, QString inPropertyPath, Getter inGetter, Setter inSetter);
 
 	QMetaType getType();
@@ -46,8 +46,8 @@ public:
 	QVariant getMetaData(const QString& inName) const;
 	const QVariantHash& getMetaDataMap() const;
 
-	QPropertyHandle* findChildHandle(const QString& inSubName);
-	QPropertyHandle* findOrCreateChildHandle(const QString& inSubName);
+	QPropertyHandle* findChild(QString inPropertyName);
+	QPropertyHandle* findOrCreateChild(QMetaType inType, QString inPropertyName, QPropertyHandle::Getter inGetter, QPropertyHandle::Setter inSetter);
 
 	QQuickItem* setupNameEditor(QQuickItem* inParent);
 	QQuickItem* steupValueEditor(QQuickItem* inParent);

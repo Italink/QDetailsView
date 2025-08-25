@@ -11,12 +11,10 @@ public:
 	bool isGadget() const;
 	QObject* getOwnerObject();
 	const QMetaObject* getMetaObject() const;
-protected:
-	QPropertyHandle* findChildHandle(const QString& inSubName) override;
 	QQuickItem* createValueEditor(QQuickItem* inParent)override;
-	QPropertyHandle* findOrCreateChildHandle(const QString& inSubName) override;
 	Type type() override { return Type::Object; };
 	void refreshObjectPtr();
+	QVariant& getObjectHolder();
 private:
 	QVariant mObjectHolder;
 	void* mObjectPtr = nullptr;
