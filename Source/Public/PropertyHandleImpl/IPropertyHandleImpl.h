@@ -27,6 +27,7 @@ protected:
 	virtual QQuickItem* createNameEditor(QQuickItem* inParent);
 	virtual QQuickItem* createValueEditor(QQuickItem* inParent)= 0;
 	virtual Type type() { return Type::Null; };
+
 protected:
 	QPropertyHandle* mHandle;
 };

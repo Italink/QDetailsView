@@ -68,6 +68,10 @@ QPropertyHandle* QPropertyHandleImpl_Sequential::findOrCreateChildHandle(const Q
 			mHandle->setVar(varList);
 		}
 	);
+	QObject::connect(mHandle, &QPropertyHandle::asVarChanged, handle, [handle](QVariant var) {
+		handle->asVarChanged(var);
+	});
+
 	//handle->setAttachButtonWidgetCallback([this,index](QHBoxLayout* Layout) {
 	//	int count = itemCount();
 	//	if (index != 0) {

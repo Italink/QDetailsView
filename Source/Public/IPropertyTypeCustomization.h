@@ -11,7 +11,7 @@ class QQuickDetailsViewLayoutBuilder;
 class QDETAILS_VIEW_API IPropertyTypeCustomization :public  QEnableSharedFromThis<IPropertyTypeCustomization>
 {
 public:
-	virtual void customizeHeader(QPropertyHandle* inPropertyHandle, QQuickDetailsViewRowBuilder* inBuilder);
+	virtual void customizeHeaderRow(QPropertyHandle* inPropertyHandle, QQuickDetailsViewRowBuilder* inBuilder);
 	virtual void customizeChildren(QPropertyHandle* inPropertyHandle, QQuickDetailsViewLayoutBuilder* inBuilder);
 };
 

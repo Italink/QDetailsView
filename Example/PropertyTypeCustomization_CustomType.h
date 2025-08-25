@@ -5,6 +5,7 @@
 
 class PropertyTypeCustomization_CustomType : public IPropertyTypeCustomization {
 protected:
+	virtual void customizeHeaderRow(QPropertyHandle* inPropertyHandle, QQuickDetailsViewRowBuilder* inBuilder) override;
 	virtual void customizeChildren(QPropertyHandle* inPropertyHandle, QQuickDetailsViewLayoutBuilder* inBuilder) override;
 };
 

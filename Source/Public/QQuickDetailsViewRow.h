@@ -13,16 +13,25 @@
 class QDETAILS_VIEW_API IDetailsViewRow {
     friend class QQuickDetailsViewModel;
 public:
+	~IDetailsViewRow() {};
+
     virtual QString name() = 0;
     virtual void setupItem(QQuickItem* inParent){}
     virtual void attachChildren() {}
     virtual void addChild(QSharedPointer<IDetailsViewRow> inChild);
-    ~IDetailsViewRow() {};
+
     void clear();
     QQuickDetailsViewModel* model();
+	QModelIndex modelIndex() const { return mModelIndex; }
+	void setModelIndex(const QModelIndex& index) { mModelIndex = index; }
+	int rowNumber() const {
+		if (!mParent) return -1;
+		return mParent->mChildren.indexOf(const_cast<IDetailsViewRow*>(this));
+	}
     void invalidateChildren();
 protected:
     QQuickDetailsViewModel* mModel = nullptr;
+    QModelIndex mModelIndex;
     IDetailsViewRow* mParent = nullptr;
     QList<QSharedPointer<IDetailsViewRow>> mChildren;
 };
