@@ -34,6 +34,17 @@ Item{
             onEditingFinished:{
                 setValue(lineEditor.text)
             }
+            Keys.onPressed: {
+                if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
+                    if (event.modifiers & Qt.ShiftModifier) {
+                        // Shift+Enter：保留换行，不处理事件
+                    } else {
+                        // 单独按Enter：触发编辑完成，不换行
+                        event.accepted = true;
+                        lineEditor.editingFinished();
+                    }
+                }
+            }
         }
         MouseArea{
             id: hoverArea
