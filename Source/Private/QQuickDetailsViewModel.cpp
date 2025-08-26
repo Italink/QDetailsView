@@ -90,15 +90,15 @@ QObject* QQuickDetailsViewModel::getObject() const
 
 QModelIndex QQuickDetailsViewModel::indexForRow(IDetailsViewRow* row) const
 {
-	if (!row || row == mRoot.get()) { // ���ڵ��޸�������������Ч����
+	if (!row || row == mRoot.get()) {
 		return QModelIndex();
 	}
-	// ��ȡ���ڵ�
+
 	IDetailsViewRow* parentRow = row->mParent;
 	if (!parentRow) {
 		return QModelIndex();
 	}
-	// ��ȡ��ǰ���ڸ��ڵ����б��е��к�
+
 	int rowNum = -1;
 	for (int i = 0; i < parentRow->mChildren.size(); ++i) {
 		if (parentRow->mChildren[i].data() == row) {
@@ -106,10 +106,9 @@ QModelIndex QQuickDetailsViewModel::indexForRow(IDetailsViewRow* row) const
 			break;
 		}
 	}
-	if (rowNum == -1) { // δ�ҵ���ǰ�У��쳣�����
+	if (rowNum == -1) { 
 		return QModelIndex();
 	}
-	// �ݹ��ȡ���ڵ���������ٴ�����ǰ�е�����
 	QModelIndex parentIndex = indexForRow(parentRow);
 	return createIndex(rowNum, 0, row);
 }

@@ -49,35 +49,26 @@ bool QQuickDetailsViewManager::isInitialized() const
 	return mInitialized;
 }
 
-void QQuickDetailsViewManager::registerQml()
+void QQuickDetailsViewManager::unregisterPropertyTypeCustomization(const QMetaType& InMetaType)
 {
-	qmlRegisterType<QQuickDetailsView>("Qt.DetailsView", 1, 0, "DetailsView");
+	if(InMetaType.metaObject())
+	mMetaTypeCustomizationMap.remove(InMetaType);
 }
 
-void QQuickDetailsViewManager::unregisterCustomClassLayout(const QMetaObject* InMetaObject)
+void QQuickDetailsViewManager::registerTypeEditor(const QMetaType& inMetaType, TypeEditorCreator Creator)
 {
-	mCustomClassTypeLayoutMap.remove(InMetaObject);
+	mTypeEditorCreatorMap.insert(inMetaType, Creator);
 }
 
-void QQuickDetailsViewManager::unregisterCustomPropertyTypeLayout(const QMetaType& InMetaType)
+void QQuickDetailsViewManager::unregisterTypeEditor(const QMetaType& inMetaType)
 {
-	mCustomPropertyTypeLayoutMap.remove(InMetaType);
-}
-
-void QQuickDetailsViewManager::registerCustomPropertyValueEditorCreator(const QMetaType& inMetaType, CustomPropertyValueWidgetCreator Creator)
-{
-	mPropertyValueEditorCreatorMap.insert(inMetaType, Creator);
-}
-
-void QQuickDetailsViewManager::unregisterCustomPropertyValueEditorCreator(const QMetaType& inMetaType)
-{
-	mPropertyValueEditorCreatorMap.remove(inMetaType);
+	mTypeEditorCreatorMap.remove(inMetaType);
 }
 
 QQuickItem* QQuickDetailsViewManager::createValueEditor(QPropertyHandle* inHandle, QQuickItem* parent)
 {
-	if (mPropertyValueEditorCreatorMap.contains(inHandle->getType())) {
-		QQuickItem* item = mPropertyValueEditorCreatorMap[inHandle->getType()](inHandle, parent);
+	if (mTypeEditorCreatorMap.contains(inHandle->getType())) {
+		QQuickItem* item = mTypeEditorCreatorMap[inHandle->getType()](inHandle, parent);
 		if (parent) {
 			item->setProperty("anchors.verticalCenter", QVariant::fromValue(parent->property("anchors.verticalCenter")));
 			//item->update();
@@ -97,12 +88,12 @@ QSharedPointer<IPropertyTypeCustomization> QQuickDetailsViewManager::getCustomPr
 	}
 	else if (inHandle->getPropertyType() == QPropertyHandle::Object) {
 		const QMetaObject* metaObject = inHandle->metaObject();
-		for (const auto& It : mCustomClassTypeLayoutMap.asKeyValueRange()) {
+		for (const auto& It : mClassCustomizationMap.asKeyValueRange()) {
 			if (It.first == metaObject) {
 				return It.second();
 			}
 		}
-		for (const auto& It : mCustomClassTypeLayoutMap.asKeyValueRange()) {
+		for (const auto& It : mClassCustomizationMap.asKeyValueRange()) {
 			if (metaObject->inherits(It.first)) {
 				return It.second();
 			}
@@ -111,7 +102,7 @@ QSharedPointer<IPropertyTypeCustomization> QQuickDetailsViewManager::getCustomPr
 	}
 	else if (inHandle->getPropertyType() == QPropertyHandle::RawType) {
 		const QMetaType& metaType = inHandle->getType();
-		for (const auto& It : mCustomPropertyTypeLayoutMap.asKeyValueRange()) {
+		for (const auto& It : mMetaTypeCustomizationMap.asKeyValueRange()) {
 			if (It.first == metaType) {
 				return It.second();
 			}
@@ -128,7 +119,7 @@ QSharedPointer<IPropertyTypeCustomization> QQuickDetailsViewManager::getCustomPr
 		else {
 			Child = metaType.metaObject();
 		}
-		for (const auto& It : mCustomPropertyTypeLayoutMap.asKeyValueRange()) {
+		for (const auto& It : mMetaTypeCustomizationMap.asKeyValueRange()) {
 			const QMetaObject* Parent = It.first.metaObject();
 			if (Parent && Child && Child->inherits(Parent)) {
 				return It.second();
@@ -142,6 +133,6 @@ QQuickDetailsViewManager::QQuickDetailsViewManager()
 {
 	RegisterBasicTypeEditor();
 
-	registerCustomPropertyTypeLayout<QMatrix4x4, PropertyTypeCustomization_Matrix4x4>();
+	registerPropertyTypeCustomization<QMatrix4x4, PropertyTypeCustomization_Matrix4x4>();
 }
 

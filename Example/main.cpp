@@ -11,10 +11,10 @@ int main(int argc, char** argv) {
 	QCustomObject obj;
 	obj.setSubCustomObject(new QCustomObject);
 	obj.getSubCustomObject()->setSubCustomObject(new QCustomObject);
-	QQuickDetailsViewManager::Get()->registerCustomPropertyTypeLayout<QCustomType, PropertyTypeCustomization_CustomType>();
-
+	QQuickDetailsViewManager::Get()->registerPropertyTypeCustomization<QCustomType, PropertyTypeCustomization_CustomType>();
 	QDetailsView view;
 	view.setObject(&obj);
 	view.show();
+
 	return app.exec();
 }

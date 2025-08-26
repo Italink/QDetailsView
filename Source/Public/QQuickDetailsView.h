@@ -17,7 +17,7 @@ public:
 	qreal getSpliterPencent() const;
 	void setSpliterPencent(qreal val);
 	Q_INVOKABLE void setObject(QObject* inObject);
-	QObject* getObject() const;
+	Q_INVOKABLE QObject* getObject() const;
 Q_SIGNALS:
 	void asSpliterPencentChanged(qreal);
 	void asObjectChanged(QObject*);

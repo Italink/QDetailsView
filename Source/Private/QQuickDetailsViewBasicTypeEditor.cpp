@@ -6,7 +6,7 @@
 #include <QMetaType>
 
 #define REGINTER_NUMBER_EDITOR_CREATOR(TypeName, DefaultPrecision) \
-	registerCustomPropertyValueEditorCreator(QMetaType::fromType<TypeName>(), [](QPropertyHandle* handle, QQuickItem* parent)->QQuickItem* { \
+	registerTypeEditor(QMetaType::fromType<TypeName>(), [](QPropertyHandle* handle, QQuickItem* parent)->QQuickItem* { \
 		QQmlEngine* engine = qmlEngine(parent);\
 		QQmlContext* context = qmlContext(parent);\
 		QQmlComponent nameComp(engine);\
@@ -51,7 +51,7 @@ void QQuickDetailsViewManager::RegisterBasicTypeEditor() {
 	REGINTER_NUMBER_EDITOR_CREATOR(float, 2);
 	REGINTER_NUMBER_EDITOR_CREATOR(double, 3);
 
-	registerCustomPropertyValueEditorCreator(QMetaType::fromType<QString>(), [](QPropertyHandle* handle, QQuickItem* parent)->QQuickItem* {
+	registerTypeEditor(QMetaType::fromType<QString>(), [](QPropertyHandle* handle, QQuickItem* parent)->QQuickItem* {
 		QQmlEngine* engine = qmlEngine(parent);
 		QQmlContext* context = qmlContext(parent);
 		QQmlComponent comp(engine);
@@ -78,7 +78,7 @@ void QQuickDetailsViewManager::RegisterBasicTypeEditor() {
 		return valueEditor;
 	});
 
-	registerCustomPropertyValueEditorCreator(QMetaType::fromType<QVector4D>(), [](QPropertyHandle* handle, QQuickItem* parent)->QQuickItem* {
+	registerTypeEditor(QMetaType::fromType<QVector4D>(), [](QPropertyHandle* handle, QQuickItem* parent)->QQuickItem* {
 		QQmlEngine* engine = qmlEngine(parent);
 		QQmlContext* context = qmlContext(parent);
 		QQmlComponent comp(engine);
@@ -104,7 +104,7 @@ void QQuickDetailsViewManager::RegisterBasicTypeEditor() {
 		return valueEditor;
 	});
 
-	registerCustomPropertyValueEditorCreator(QMetaType::fromType<QVector3D>(), [](QPropertyHandle* handle, QQuickItem* parent)->QQuickItem* {
+	registerTypeEditor(QMetaType::fromType<QVector3D>(), [](QPropertyHandle* handle, QQuickItem* parent)->QQuickItem* {
 		QQmlEngine* engine = qmlEngine(parent);
 		QQmlContext* context = qmlContext(parent);
 		QQmlComponent comp(engine);
@@ -130,7 +130,7 @@ void QQuickDetailsViewManager::RegisterBasicTypeEditor() {
 		return valueEditor;
 	});
 
-	registerCustomPropertyValueEditorCreator(QMetaType::fromType<QVector2D>(), [](QPropertyHandle* handle, QQuickItem* parent)->QQuickItem* {
+	registerTypeEditor(QMetaType::fromType<QVector2D>(), [](QPropertyHandle* handle, QQuickItem* parent)->QQuickItem* {
 		QQmlEngine* engine = qmlEngine(parent);
 		QQmlContext* context = qmlContext(parent);
 		QQmlComponent comp(engine);
@@ -156,7 +156,7 @@ void QQuickDetailsViewManager::RegisterBasicTypeEditor() {
 		return valueEditor;
 	});
 
-	registerCustomPropertyValueEditorCreator(QMetaType::fromType<QColor>(), [](QPropertyHandle* handle, QQuickItem* parent)->QQuickItem* {
+	registerTypeEditor(QMetaType::fromType<QColor>(), [](QPropertyHandle* handle, QQuickItem* parent)->QQuickItem* {
 		QQmlEngine* engine = qmlEngine(parent);
 		QQmlContext* context = qmlContext(parent);
 		QQmlComponent comp(engine);
@@ -204,7 +204,7 @@ void QQuickDetailsViewManager::RegisterBasicTypeEditor() {
 		QMetaType::fromType<QDir>()
 	);
 
-	registerCustomPropertyValueEditorCreator(QMetaType::fromType<QDir>(), [](QPropertyHandle* handle, QQuickItem* parent)->QQuickItem* {
+	registerTypeEditor(QMetaType::fromType<QDir>(), [](QPropertyHandle* handle, QQuickItem* parent)->QQuickItem* {
 		QQmlEngine* engine = qmlEngine(parent);
 		QQmlContext* context = qmlContext(parent);
 		QQmlComponent comp(engine);
