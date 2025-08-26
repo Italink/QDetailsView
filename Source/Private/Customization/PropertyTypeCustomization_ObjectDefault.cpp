@@ -48,6 +48,5 @@ void PropertyTypeCustomization_ObjectDefault::customizeChildren(QPropertyHandle*
 			}
 		}
 	}
-
 }
 

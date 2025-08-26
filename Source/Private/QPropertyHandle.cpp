@@ -107,6 +107,16 @@ QPropertyHandle* QPropertyHandle::Create(QObject* inParent, QMetaType inType, QS
 	return new QPropertyHandle(inParent, inType, inPropertyPath, inGetter, inSetter);
 }
 
+void QPropertyHandle::Cleanup(QObject* inParent)
+{
+	for (QObject* child : inParent->children()) {
+		QPropertyHandle* handler = qobject_cast<QPropertyHandle*>(child);
+		if (handler) {
+			handler->deleteLater();
+		}
+	}
+}
+
 QMetaType QPropertyHandle::getType()
 {
 	return mType;

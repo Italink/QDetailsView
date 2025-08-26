@@ -30,6 +30,7 @@ public:
 	static QPropertyHandle* FindOrCreate(QObject* inParent, QMetaType inType, QString inPropertyPath, Getter inGetter, Setter inSetter);
 	static QPropertyHandle* FindOrCreate(QObject* inObject);
 	static QPropertyHandle* Create(QObject* inParent, QMetaType inType, QString inPropertyPath, Getter inGetter, Setter inSetter);
+	static void Cleanup(QObject* inParent);
 
 	QMetaType getType();
 	PropertyType getPropertyType() const;
