@@ -11,6 +11,7 @@ public:
 	explicit QDetailsView(QWidget* parent = nullptr);
 	QQuickDetailsView* getQuickDetailsView() const;
 	void setObject(QObject* inObject);
+	QObject* getObject() const;
 private:
 	QQuickWidget* mQuickWidget;
 	QQuickDetailsView* mQuickDetailsView;

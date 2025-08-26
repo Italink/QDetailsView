@@ -75,3 +75,12 @@ void QDetailsView::setObject(QObject* inObject)
 		rootObject->setProperty("Object", QVariant::fromValue(inObject));
 	}
 }
+
+QObject* QDetailsView::getObject() const
+{
+	QQuickItem* rootObject = mQuickWidget->rootObject();
+	if (rootObject) {
+		return rootObject->property("Object").value<QObject*>();
+	}
+	return nullptr;
+}
