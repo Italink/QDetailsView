@@ -39,10 +39,10 @@ public:
 
 	Q_PROPERTY_VAR(QCustomEnum, CustomEnum) = QCustomEnum::One;
 	Q_PROPERTY_VAR(QCustomType, CustomType);
-	Q_PROPERTY_VAR(QCutsomGadget, CustomGadget);
-	Q_PROPERTY_VAR(QCutsomGadget*, CustomGadgetPtr) = new QCutsomGadget;
-	Q_PROPERTY_VAR(QSharedPointer<QCutsomGadget>, CustomGadgetSharedPtr) = QSharedPointer<QCutsomGadget>::create();
-	//Q_PROPERTY_VAR(QCustomObject*, SubCustomObject) = nullptr;
+	Q_PROPERTY_VAR(QCustomGadget, CustomGadget);
+	Q_PROPERTY_VAR(QCustomGadget*, CustomGadgetPtr) = new QCustomGadget;
+	Q_PROPERTY_VAR(QSharedPointer<QCustomGadget>, CustomGadgetSharedPtr) = QSharedPointer<QCustomGadget>::create();
+	Q_PROPERTY_VAR(QCustomObject*, SubCustomObject) = nullptr;
 };
 
 #endif // CustomObject_h__

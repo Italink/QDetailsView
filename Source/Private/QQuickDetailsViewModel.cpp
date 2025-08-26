@@ -90,15 +90,15 @@ QObject* QQuickDetailsViewModel::getObject() const
 
 QModelIndex QQuickDetailsViewModel::indexForRow(IDetailsViewRow* row) const
 {
-	if (!row || row == mRoot.get()) { // ¸ù½ÚµãÎÞ¸¸Ë÷Òý£¬·µ»ØÎÞÐ§Ë÷Òý
+	if (!row || row == mRoot.get()) { // ï¿½ï¿½ï¿½Úµï¿½ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½
 		return QModelIndex();
 	}
-	// »ñÈ¡¸¸½Úµã
+	// ï¿½ï¿½È¡ï¿½ï¿½ï¿½Úµï¿½
 	IDetailsViewRow* parentRow = row->mParent;
 	if (!parentRow) {
 		return QModelIndex();
 	}
-	// »ñÈ¡µ±Ç°ÐÐÔÚ¸¸½Úµã×ÓÁÐ±íÖÐµÄÐÐºÅ
+	// ï¿½ï¿½È¡ï¿½ï¿½Ç°ï¿½ï¿½ï¿½Ú¸ï¿½ï¿½Úµï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½Ðµï¿½ï¿½Ðºï¿½
 	int rowNum = -1;
 	for (int i = 0; i < parentRow->mChildren.size(); ++i) {
 		if (parentRow->mChildren[i].data() == row) {
@@ -106,10 +106,10 @@ QModelIndex QQuickDetailsViewModel::indexForRow(IDetailsViewRow* row) const
 			break;
 		}
 	}
-	if (rowNum == -1) { // Î´ÕÒµ½µ±Ç°ÐÐ£¨Òì³£Çé¿ö£©
+	if (rowNum == -1) { // Î´ï¿½Òµï¿½ï¿½ï¿½Ç°ï¿½Ð£ï¿½ï¿½ì³£ï¿½ï¿½ï¿½ï¿½ï¿½
 		return QModelIndex();
 	}
-	// µÝ¹é»ñÈ¡¸¸½ÚµãµÄË÷Òý£¬ÔÙ´´½¨µ±Ç°ÐÐµÄË÷Òý
+	// ï¿½Ý¹ï¿½ï¿½È¡ï¿½ï¿½ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù´ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½
 	QModelIndex parentIndex = indexForRow(parentRow);
 	return createIndex(rowNum, 0, row);
 }

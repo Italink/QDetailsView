@@ -27,9 +27,6 @@ QQuickItem* IPropertyHandleImpl::createNameEditor(QQuickItem* inParent)
 				text: model.name
 				color: ColorPalette.theme.labelPrimary
 			}
-			Component.onCompleted: {
-				console.log(`[构造完成]`, model.name)
-			}
 		}
    )", QUrl());
 	QVariantMap initialProperties;

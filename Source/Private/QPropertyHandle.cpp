@@ -177,13 +177,25 @@ QPropertyHandle* QPropertyHandle::findChild(QString inPropertyName)
 
 QPropertyHandle* QPropertyHandle::findOrCreateChild(QMetaType inType, QString inPropertyName, Getter inGetter, Setter inSetter)
 {
-	QPropertyHandle* childHandle = QPropertyHandle::FindOrCreate(
-		this->parent(),
-		inType,
-		this->createSubPath(inPropertyName),
-		inGetter,
-		inSetter
-	);
+	QVariant var = inGetter();
+	QObject* object = var.value<QObject*>();
+	QPropertyHandle* childHandle = nullptr;
+	if (object) {
+		childHandle = QPropertyHandle::FindOrCreate(
+			object
+		);
+		childHandle->setObjectName(inPropertyName);
+	}
+	else {
+		childHandle = QPropertyHandle::FindOrCreate(
+			this->parent(),
+			inType,
+			this->createSubPath(inPropertyName),
+			inGetter,
+			inSetter
+		);
+	}
+
 	childHandle->disconnect(this);
 	connect(this, &QPropertyHandle::asVarChanged, childHandle, [childHandle](QVariant) {
 		QVariant var = childHandle->getVar();

@@ -6,10 +6,10 @@ void PropertyTypeCustomization_ObjectDefault::customizeChildren(QPropertyHandle*
 {
 	auto objectHandle = inPropertyHandle->asObject();
 	const QMetaObject* metaObject = objectHandle->getMetaObject();
-	for (int i = objectHandle->isGadget() ? 0 : 1; i < metaObject->propertyCount(); i++) {
-		QMetaProperty prop = metaObject->property(i);
-		QString propName = prop.name();
-		if (objectHandle->isGadget()) {
+	if (objectHandle->isGadget()) {
+		for (int i = objectHandle->isGadget() ? 0 : 1; i < metaObject->propertyCount(); i++) {
+			QMetaProperty prop = metaObject->property(i);
+			QString propName = prop.name();
 			inBuilder->addProperty(inPropertyHandle->findOrCreateChild(
 				prop.metaType(),
 				propName,
@@ -23,18 +23,25 @@ void PropertyTypeCustomization_ObjectDefault::customizeChildren(QPropertyHandle*
 				}
 			));
 		}
-		else {
-			inBuilder->addProperty(inPropertyHandle->findOrCreateChild(
-				prop.metaType(),
-				propName,
-				[this, prop, objectHandle]() {
-					return prop.read(objectHandle->getObject());
-				},
-				[this, prop, objectHandle, inPropertyHandle](QVariant var) {
-					prop.write(objectHandle->getObject(), var);
-				}
-			));
+	}
+	else {
+		if (objectHandle->getObject() != nullptr) {
+			for (int i = objectHandle->isGadget() ? 0 : 1; i < metaObject->propertyCount(); i++) {
+				QMetaProperty prop = metaObject->property(i);
+				QString propName = prop.name();
+				inBuilder->addProperty(inPropertyHandle->findOrCreateChild(
+					prop.metaType(),
+					propName,
+					[this, prop, objectHandle]() {
+						return prop.read(objectHandle->getObject());
+					},
+					[this, prop, objectHandle, inPropertyHandle](QVariant var) {
+						prop.write(objectHandle->getObject(), var);
+					}
+				));
+			}
 		}
 	}
+
 }
 
