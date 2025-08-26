@@ -19,7 +19,7 @@ Item{
     function setNumber(value:var){
         if(value !== number && !isNaN(value)){
             number = value
-            if(isLimited){
+            if(min < max){
                 if(number>max){
                     number = max
                 }

@@ -33,11 +33,16 @@
 		valueEditor->setProperty("step", step <= 0.0001 ? 1 / pow(10, DefaultPrecision): step);\
 		valueEditor->setProperty("number", handle->getVar());\
 		valueEditor->setProperty("precision", precision == 0 ? DefaultPrecision:precision); \
-		if (min < max) {\
-			valueEditor->setProperty("min", min);\
-			valueEditor->setProperty("max", max);\
-			valueEditor->setProperty("isLimited", true);\
+		if (min >= max) { \
+			min = std::numeric_limits<TypeName>::min(); \
+			max = std::numeric_limits<TypeName>::max(); \
 		}\
+		else { \
+			valueEditor->setProperty("isLimited", true); \
+		} \
+		valueEditor->setProperty("min", min); \
+		valueEditor->setProperty("max", max); \
+		qDebug() << min << max; \
 		connect(valueEditor, SIGNAL(valueChanged(QVariant)), handle, SLOT(setVar(QVariant))); \
 		connect(handle, SIGNAL(asRequestRollback(QVariant)), valueEditor, SLOT(setNumber(QVariant))); \
 		return valueEditor;\
