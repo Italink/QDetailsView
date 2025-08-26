@@ -26,8 +26,8 @@ public:
 
 	IDetailsViewRow* row() const;
 
-	void addCustomRow(std::function<void(QQuickDetailsViewRowBuilder*)> inCustomRowCreator);
-	void addProperty(QPropertyHandle* inPropertyHandle);
+	void addCustomRow(std::function<void(QQuickDetailsViewRowBuilder*)> inCustomRowCreator, QString inOverrideName = "");
+	void addProperty(QPropertyHandle* inPropertyHandle, QString inOverrideName = "");
 	void addObject(QObject* inObject);
 private:
 	IDetailsViewRow* mRootRow = nullptr;

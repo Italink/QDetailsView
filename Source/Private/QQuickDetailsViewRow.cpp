@@ -3,6 +3,16 @@
 #include "QQuickDetailsViewMananger.h"
 #include "QQuickDetailsViewModel.h"
 
+void IDetailsViewRow::setName(QString inName)
+{
+	mName = inName;
+}
+
+QString IDetailsViewRow::name()
+{
+	return mName;
+}
+
 void IDetailsViewRow::addChild(QSharedPointer<IDetailsViewRow> inChild)
 {
 	mChildren << inChild;

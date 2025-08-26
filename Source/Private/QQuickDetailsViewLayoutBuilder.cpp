@@ -194,16 +194,18 @@ IDetailsViewRow* QQuickDetailsViewLayoutBuilder::row() const
     return mRootRow;
 }
 
-void QQuickDetailsViewLayoutBuilder::addCustomRow(std::function<void(QQuickDetailsViewRowBuilder*)> creator)
+void QQuickDetailsViewLayoutBuilder::addCustomRow(std::function<void(QQuickDetailsViewRowBuilder*)> creator, QString inOverrideName)
 {
 	QSharedPointer<IDetailsViewRow> child(new QDetailsViewRow_Custom(creator));
+    child->setName(inOverrideName);
 	mRootRow->addChild(child);
 	child->attachChildren();
 }
 
-void QQuickDetailsViewLayoutBuilder::addProperty(QPropertyHandle* inPropertyHandle)
+void QQuickDetailsViewLayoutBuilder::addProperty(QPropertyHandle* inPropertyHandle, QString inOverrideName)
 {
 	QSharedPointer<IDetailsViewRow> child(new QDetailsViewRow_Property(inPropertyHandle));
+    child->setName(inOverrideName.isEmpty() ? inPropertyHandle->getName() : inOverrideName);
 	mRootRow->addChild(child);
 	child->attachChildren();
 }

@@ -10,18 +10,21 @@ void PropertyTypeCustomization_ObjectDefault::customizeChildren(QPropertyHandle*
 		for (int i = objectHandle->isGadget() ? 0 : 1; i < metaObject->propertyCount(); i++) {
 			QMetaProperty prop = metaObject->property(i);
 			QString propName = prop.name();
-			inBuilder->addProperty(inPropertyHandle->findOrCreateChild(
-				prop.metaType(),
-				propName,
-				[this, prop, objectHandle]() {
-					return prop.readOnGadget(objectHandle->getGadget());
-				},
-				[this, prop, objectHandle, inPropertyHandle](QVariant var) {
-					prop.writeOnGadget(objectHandle->getGadget(), var);
-					inPropertyHandle->setVar(objectHandle->getObjectHolder());
-					objectHandle->refreshObjectPtr();
-				}
-			));
+			inBuilder->addProperty(
+				inPropertyHandle->findOrCreateChild(
+					prop.metaType(),
+					propName,
+					[this, prop, objectHandle]() {
+						return prop.readOnGadget(objectHandle->getGadget());
+					},
+					[this, prop, objectHandle, inPropertyHandle](QVariant var) {
+						prop.writeOnGadget(objectHandle->getGadget(), var);
+						inPropertyHandle->setVar(objectHandle->getObjectHolder());
+						objectHandle->refreshObjectPtr();
+					}
+				),
+				propName
+			);
 		}
 	}
 	else {
@@ -29,16 +32,19 @@ void PropertyTypeCustomization_ObjectDefault::customizeChildren(QPropertyHandle*
 			for (int i = objectHandle->isGadget() ? 0 : 1; i < metaObject->propertyCount(); i++) {
 				QMetaProperty prop = metaObject->property(i);
 				QString propName = prop.name();
-				inBuilder->addProperty(inPropertyHandle->findOrCreateChild(
-					prop.metaType(),
-					propName,
-					[this, prop, objectHandle]() {
-						return prop.read(objectHandle->getObject());
-					},
-					[this, prop, objectHandle, inPropertyHandle](QVariant var) {
-						prop.write(objectHandle->getObject(), var);
-					}
-				));
+				inBuilder->addProperty(
+					inPropertyHandle->findOrCreateChild(
+						prop.metaType(),
+						propName,
+						[this, prop, objectHandle]() {
+							return prop.read(objectHandle->getObject());
+						},
+						[this, prop, objectHandle, inPropertyHandle](QVariant var) {
+							prop.write(objectHandle->getObject(), var);
+						}
+					),
+					propName
+				);
 			}
 		}
 	}

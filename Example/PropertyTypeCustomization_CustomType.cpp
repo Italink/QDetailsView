@@ -67,7 +67,6 @@ void PropertyTypeCustomization_CustomType::customizeChildren(QPropertyHandle* in
 		}
 	);
 
-
 	inBuilder->addProperty(arraySizeHandle);
 	inBuilder->addProperty(arrayHandle);
 }

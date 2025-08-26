@@ -15,7 +15,9 @@ class QDETAILS_VIEW_API IDetailsViewRow {
 public:
 	~IDetailsViewRow() {};
 
-    virtual QString name() = 0;
+    void setName(QString inName);
+    virtual QString name();
+
     virtual void setupItem(QQuickItem* inParent){}
     virtual void attachChildren() {}
     virtual void addChild(QSharedPointer<IDetailsViewRow> inChild);
@@ -30,6 +32,7 @@ public:
 	}
     void invalidateChildren();
 protected:
+    QString mName;
     QQuickDetailsViewModel* mModel = nullptr;
     QModelIndex mModelIndex;
     IDetailsViewRow* mParent = nullptr;
@@ -41,7 +44,6 @@ public:
     QDetailsViewRow_Property(QPropertyHandle* inHandle);
     ~QDetailsViewRow_Property();
     void setHandle(QPropertyHandle* inHandle);
-    QString name() override { return mHandle->getName(); }
     void setupItem(QQuickItem* inParent) override;
     void attachChildren() override;
 protected:
