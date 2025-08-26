@@ -26,7 +26,7 @@ void PropertyTypeCustomization_Associative::customizeChildren(QPropertyHandle* i
 				QtPrivate::QVariantTypeCoercer keyCoercer;
 				QtPrivate::QVariantTypeCoercer mappedCoercer;
 				void* containterPtr = const_cast<void*>(iterable.constIterable());
-				const void* dataPtr = mappedCoercer.coerce(var, var.metaType());
+				const void* dataPtr = mappedCoercer.coerce(var, metaAssociation.mappedMetaType());
 				metaAssociation.setMappedAtKey(containterPtr, keyCoercer.coerce(key, metaAssociation.keyMetaType()), dataPtr);
 				inPropertyHandle->setVar(varMap);
 			}

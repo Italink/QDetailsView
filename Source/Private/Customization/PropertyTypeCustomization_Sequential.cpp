@@ -29,7 +29,7 @@ void PropertyTypeCustomization_Sequential::customizeChildren(QPropertyHandle* in
 					const QMetaSequence metaSequence = iterable.metaContainer();
 					void* containterPtr = const_cast<void*>(iterable.constIterable());
 					QtPrivate::QVariantTypeCoercer coercer;
-					const void* dataPtr = coercer.coerce(var, var.metaType());
+					const void* dataPtr = coercer.coerce(var, iterable.valueMetaType());
 					metaSequence.setValueAtIndex(containterPtr, index, dataPtr);
 					inPropertyHandle->setVar(varList);
 				}
