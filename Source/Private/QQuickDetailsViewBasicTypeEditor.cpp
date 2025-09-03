@@ -6,47 +6,48 @@
 #include <QMetaType>
 
 #define REGINTER_NUMBER_EDITOR_CREATOR(TypeName, DefaultPrecision) \
-	registerTypeEditor(QMetaType::fromType<TypeName>(), [](QPropertyHandle* handle, QQuickItem* parent)->QQuickItem* { \
-		QQmlEngine* engine = qmlEngine(parent);\
-		QQmlContext* context = qmlContext(parent);\
-		QQmlComponent nameComp(engine);\
-		nameComp.setData(R"(
-					import QtQuick;
-					import QtQuick.Controls;
-					import "qrc:/Resources/Qml/ValueEditor"
-					NumberBox{
-						anchors.verticalCenter: parent.verticalCenter
-						width: parent.width
-					}
-				)", QUrl());\
-		QVariantMap initialProperties; \
-		initialProperties["parent"] = QVariant::fromValue(parent);\
-		auto valueEditor = qobject_cast<QQuickItem*>(nameComp.createWithInitialProperties(initialProperties, context));\
-		if (!nameComp.errors().isEmpty()) { \
-			qDebug() << nameComp.errorString(); \
-		} \
-		valueEditor->setParentItem(parent);\
-		TypeName min = handle->getMetaData("Min").toDouble();\
-		TypeName max = handle->getMetaData("Max").toDouble();\
-		double step = handle->getMetaData("Step").toDouble();\
-		int precision = handle->getMetaData("Precision").toInt(); \
-		valueEditor->setProperty("step", step <= 0.0001 ? 1 / pow(10, DefaultPrecision): step);\
-		valueEditor->setProperty("number", handle->getVar());\
-		valueEditor->setProperty("precision", precision == 0 ? DefaultPrecision:precision); \
-		if (min >= max) { \
-			min = std::numeric_limits<TypeName>::min(); \
-			max = std::numeric_limits<TypeName>::max(); \
-		}\
-		else { \
-			valueEditor->setProperty("isLimited", true); \
-		} \
-		valueEditor->setProperty("min", min); \
-		valueEditor->setProperty("max", max); \
-		qDebug() << min << max; \
-		connect(valueEditor, SIGNAL(valueChanged(QVariant)), handle, SLOT(setVar(QVariant))); \
-		connect(handle, SIGNAL(asRequestRollback(QVariant)), valueEditor, SLOT(setNumber(QVariant))); \
-		return valueEditor;\
-	});
+    registerTypeEditor(QMetaType::fromType<TypeName>(), [](QPropertyHandle* handle, QQuickItem* parent)->QQuickItem* { \
+        QQmlEngine* engine = qmlEngine(parent); \
+        QQmlContext* context = qmlContext(parent); \
+        QQmlComponent nameComp(engine); \
+        const char* qmlData = \
+            "import QtQuick;\n" \
+            "import QtQuick.Controls;\n" \
+            "import \"qrc:/Resources/Qml/ValueEditor\"\n" \
+            "NumberBox{\n" \
+            "    anchors.verticalCenter: parent.verticalCenter\n" \
+            "    width: parent.width\n" \
+            "}"; \
+        nameComp.setData(qmlData, QUrl()); \
+        QVariantMap initialProperties; \
+        initialProperties["parent"] = QVariant::fromValue(parent); \
+        auto valueEditor = qobject_cast<QQuickItem*>(nameComp.createWithInitialProperties(initialProperties, context)); \
+        if (!nameComp.errors().isEmpty()) { \
+            qDebug() << nameComp.errorString(); \
+        } \
+        if (valueEditor) { \
+            valueEditor->setParentItem(parent); \
+            TypeName min = handle->getMetaData("Min").toDouble(); \
+            TypeName max = handle->getMetaData("Max").toDouble(); \
+            double step = handle->getMetaData("Step").toDouble(); \
+            int precision = handle->getMetaData("Precision").toInt(); \
+            valueEditor->setProperty("step", step <= 0.0001 ? 1.0 / pow(10.0, DefaultPrecision) : step); \
+            valueEditor->setProperty("number", handle->getVar()); \
+            valueEditor->setProperty("precision", precision == 0 ? DefaultPrecision : precision); \
+            if (min >= max) { \
+                min = std::numeric_limits<TypeName>::min(); \
+                max = std::numeric_limits<TypeName>::max(); \
+            } else { \
+                valueEditor->setProperty("isLimited", true); \
+            } \
+            valueEditor->setProperty("min", min); \
+            valueEditor->setProperty("max", max); \
+            qDebug() << min << max; \
+            QObject::connect(valueEditor, SIGNAL(valueChanged(QVariant)), handle, SLOT(setVar(QVariant))); \
+            QObject::connect(handle, SIGNAL(asRequestRollback(QVariant)), valueEditor, SLOT(setNumber(QVariant))); \
+        } \
+        return valueEditor; \
+    });
 
 
 void QQuickDetailsViewManager::RegisterBasicTypeEditor() {
